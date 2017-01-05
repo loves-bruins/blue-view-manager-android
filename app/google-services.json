@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "139037851908",
+    "firebase_url": "https://blue-view-manager.firebaseio.com",
+    "project_id": "blue-view-manager",
+    "storage_bucket": "blue-view-manager.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139037851908:android:e7b12cdd9cdc6f49",
+        "android_client_info": {
+          "package_name": "furtiveops.com.blueviewmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "139037851908-63f3d9l9f2g8bmi7mo9dffq3rpuh00pp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC54wOdi_a446YjqyE4N-n144g87rPs36M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/email_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_in_email"
+        android:textAppearance="@style/TextAppearance.Large"/>
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/email_label"
+        android:imeOptions="actionNext"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:padding="8dp"
+        android:background="@drawable/rounded_border" />
+
+    <TextView
+        android:id="@+id/password_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_in_password"
+        android:textAppearance="@style/TextAppearance.Large"
+        android:layout_below="@+id/email" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/password_label"
+        android:imeOptions="actionGo"
+        android:inputType="textPassword"
+        android:background="@drawable/rounded_border"
+        android:padding="8dp"
+        android:ems="10" />
+</RelativeLayout>

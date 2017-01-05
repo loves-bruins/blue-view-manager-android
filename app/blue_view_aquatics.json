@@ -1,0 +1,22 @@
+{
+  "users":[
+    {
+      "first_name": "Admin",
+      "last_name" : "",
+      "Role" : "admin",
+      "username" : "admin"
+    }
+  ],
+  "tests": [
+    {
+      "name": "Cycle Tests",
+      "definition": {
+        "title": "Ammonia",
+        "result": ""
+      }
+    }
+  ],
+  "roles":[
+
+  ]
+}

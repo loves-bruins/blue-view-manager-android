@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_entire_history"
+            android:icon="@mipmap/ic_view_list_black_24dp"
+            android:title="Entire History" />
+        <item
+            android:id="@+id/nav_track_tests"
+            android:icon="@mipmap/ic_track_changes_black_24dp"
+            android:title="Completed Tests" />
+        <item
+            android:id="@+id/nav_shop_bva"
+            android:icon="@mipmap/ic_shopping_cart_black_24dp"
+            android:title="Shop BVA" />
+        <item
+            android:id="@+id/nav_schedule_work"
+            android:icon="@mipmap/ic_today_black_24dp"
+            android:title="Schedule Work" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_call_bva"
+                android:icon="@mipmap/ic_call_black_24dp"
+                android:title="Call BVA" />
+            <item
+                android:id="@+id/nav_email_bva"
+                android:icon="@mipmap/ic_email_black_24dp"
+                android:title="Email BVA" />
+        </menu>
+    </item>
+
+</menu>
