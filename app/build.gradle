@@ -47,14 +47,29 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:9.8.0'
     compile 'com.google.android.gms:play-services-ads:9.8.0'
     compile 'com.google.firebase:firebase-crash:9.8.0'
+
+    testCompile 'junit:junit:4.12'
+
     // Firebase UI
     compile 'com.firebaseui:firebase-ui-database:0.4.0'
-    /* Material FlatButton (fbutton)*/
+
     // For Emulator and google play services
     compile 'com.google.android.gms:play-services:9.8.0'
+
+    // Material FlatButton (fbutton)
     compile 'info.hoang8f:fbutton:1.0.5'
-    testCompile 'junit:junit:4.12'
+
+    // Butterknife support
     compile 'com.jakewharton:butterknife:8.4.0'
+
+    /* Snackbar wasn't avaialable until at least Marshmallow. This app supports v16, so we need this */
+    compile 'com.nispok:snackbar:2.11.+'
+
+    // Material Dialogs
+    compile 'com.afollestad.material-dialogs:core:0.8.5.9'
+
+    // Floating Action Button
+    compile 'com.github.clans:fab:1.6.4'
 }
 
 apply plugin: 'com.google.gms.google-services'

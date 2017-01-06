@@ -68,4 +68,8 @@
 
     <string name="id_fmt">User ID: %s</string>
     <string name="email_fmt">Email: %s</string>
+
+    <string name="login_text">Sign In</string>
+    <string name="username_hint">username@yourserver.com</string>
+    <string name="password_hint">password</string>
 </resources>

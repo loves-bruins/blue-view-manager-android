@@ -18,7 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.SignInActivity"/>
+        <activity android:name=".activity.SignInActivity"
+            android:windowSoftInputMode="adjustPan"/>
+
         <activity android:name=".activity.EmailPasswordActivity"/>
     </application>
 
