@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 24
@@ -60,6 +61,7 @@ dependencies {
     compile 'info.hoang8f:fbutton:1.0.5'
 
     // Butterknife support
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.jakewharton:butterknife:8.4.0'
 
     /* Snackbar wasn't avaialable until at least Marshmallow. This app supports v16, so we need this */

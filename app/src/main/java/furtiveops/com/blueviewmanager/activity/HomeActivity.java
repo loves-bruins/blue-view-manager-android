@@ -27,45 +27,34 @@ import com.google.firebase.database.DatabaseReference;
 import furtiveops.com.blueviewmanager.R;
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     static final String TAG = "HomeActivity";
-    private String mUsername;
-    private String mPhotoUrl;
-    public static final String ANONYMOUS = "anonymous";
 
-    private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mFirebaseDatabaseReference;
 
+    private String userId;
+    private String userName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        // Set default username is anonymous.
-        mUsername = ANONYMOUS;
-
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
-//        if (mFirebaseUser == null) {
-//            // Not signed in, launch the Sign In activity
-//            Intent intent = EmailPasswordActivity.makeIntent(this);
-//            startActivity(intent);
-//            return;
-//        } else {
-//            mUsername = mFirebaseUser.getDisplayName();
-//            if (mFirebaseUser.getPhotoUrl() != null) {
-//                mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
-//            }
-//        }
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API)
-                .build();
+        if (mFirebaseUser == null) {
+            // Not signed in, launch the Sign In activity
+            Intent intent = SignInActivity.makeIntent(this);
+            startActivity(intent);
+            return;
+        } else {
+            userName = mFirebaseUser.getDisplayName();
+            userId = mFirebaseUser.getUid();
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -121,9 +110,6 @@ public class HomeActivity extends AppCompatActivity
         else if(id == R.id.action_signin)
         {
             mFirebaseAuth.signOut();
-            Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-            mUsername = ANONYMOUS;
-            startActivity(new Intent(this, SignInActivity.class));
             return true;
         }
 
@@ -153,11 +139,5 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d(TAG, "onConnectionFailed:" + connectionResult);
-        Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }
 }
