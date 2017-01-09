@@ -1,0 +1,25 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/progress_bar_layout"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
+    android:layout_centerHorizontal="true"
+    android:gravity="center_horizontal"
+    android:visibility="gone"
+    android:elevation="5dp"
+    android:background="@drawable/progress_bar_circle"
+    app:cardBackgroundColor="@color/color_white"
+    app:cardCornerRadius="20dp">
+
+    <ProgressBar
+        android:theme="@style/ProgressStyle"
+        android:id="@+id/progress_bar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerInParent="true" />
+
+</RelativeLayout>

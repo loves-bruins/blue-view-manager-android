@@ -72,4 +72,7 @@
     <string name="login_text">Sign In</string>
     <string name="username_hint">username@yourserver.com</string>
     <string name="password_hint">password</string>
+
+    <string name="title_placeholder">Title</string>
+    <string name="subtext_placeholder">subtitle</string>
 </resources>
