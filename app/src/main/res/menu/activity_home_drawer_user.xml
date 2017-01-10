@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <item android:title="@string/show_users"
+        android:id="@+id/show_users"
+        android:icon="@mipmap/ic_people_black_24dp" />
+
+    <group
+        android:id="@+id/user_group"
+        android:checkableBehavior="single"
+        android:visible="true">
         <item
             android:id="@+id/nav_entire_history"
             android:icon="@mipmap/ic_view_list_black_24dp"
@@ -18,9 +25,12 @@
             android:id="@+id/nav_schedule_work"
             android:icon="@mipmap/ic_today_black_24dp"
             android:title="Schedule Work" />
-    </group>
 
-    <item android:title="Communicate">
+    </group>
+    <item
+        android:id="@+id/user_communicate_item"
+        android:title="Communicate"
+        android:visible="true">
         <menu>
             <item
                 android:id="@+id/nav_call_bva"
@@ -32,5 +42,6 @@
                 android:title="Email BVA" />
         </menu>
     </item>
+
 
 </menu>

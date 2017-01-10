@@ -1,5 +1,6 @@
 package furtiveops.com.blueviewmanager.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.nispok.snackbar.SnackbarManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import furtiveops.com.blueviewmanager.IntentConstants;
 import furtiveops.com.blueviewmanager.R;
 
 /**
@@ -76,6 +78,9 @@ public class SignInActivity extends AppCompatActivity  {
             }
         };
         // [END auth_state_listener]
+
+        userName.setText("blueviewaquatics@gmail.com");
+        password.setText("password");
     }
 
     // [START on_start_add_listener]
@@ -110,8 +115,17 @@ public class SignInActivity extends AppCompatActivity  {
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
                             SnackbarManager.show(Snackbar.with(SignInActivity.this).text(R.string.auth_failed));
+                            setResult(Activity.RESULT_CANCELED);
+                        }
+                        else {
+                            final AuthResult authResult = task.getResult();
+                            Intent intent = new Intent();
+                            intent.putExtra(IntentConstants.USER_ID, authResult.getUser().getUid());
+                            intent.putExtra(IntentConstants.USER_EMAIL, authResult.getUser().getEmail());
+                            setResult(Activity.RESULT_OK, intent);
                         }
                         finish();
+                        //finishActivity(HomeActivity.RC_LOGGED_IN);
                     }
                 });
     }

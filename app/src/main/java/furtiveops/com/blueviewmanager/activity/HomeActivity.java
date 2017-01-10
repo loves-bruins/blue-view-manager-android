@@ -1,5 +1,6 @@
 package furtiveops.com.blueviewmanager.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,41 +13,55 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import furtiveops.com.blueviewmanager.IntentConstants;
 import furtiveops.com.blueviewmanager.R;
+import furtiveops.com.blueviewmanager.models.User;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     static final String TAG = "HomeActivity";
 
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
+
+    @BindView(R.id.content_home)
+    RelativeLayout contentHome;
+
     private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
     private DatabaseReference mFirebaseDatabaseReference;
 
-    private String userId;
-    private String userName;
+    private User user;
+    public static final int RC_LOGGED_IN = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_home);
 
+        ButterKnife.bind(this);
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        FirebaseUser firebaseUser;
+        firebaseUser = mFirebaseAuth.getCurrentUser();
 
-        if (mFirebaseUser == null) {
+        if (firebaseUser == null) {
             // Not signed in, launch the Sign In activity
             Intent intent = SignInActivity.makeIntent(this);
-            startActivity(intent);
+            startActivityForResult(intent, RC_LOGGED_IN);
             return;
         } else {
-            userName = mFirebaseUser.getDisplayName();
-            userId = mFirebaseUser.getUid();
+            user = new User(firebaseUser.getUid(), firebaseUser.getEmail(), getRole(firebaseUser.getEmail()));
+            setupHomeMenu();
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -65,8 +80,21 @@ public class HomeActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(RC_LOGGED_IN == requestCode && Activity.RESULT_OK == resultCode) {
+            if(null != data) {
+                final String userId = data.getStringExtra(IntentConstants.USER_ID);
+                final String email = data.getStringExtra(IntentConstants.USER_EMAIL);
+                user = new User(userId, email, getRole(email));
+
+            }
+            setupHomeMenu();
+        }
     }
 
     @Override
@@ -98,7 +126,7 @@ public class HomeActivity extends AppCompatActivity
             return true;
         }
 
-        else if(id == R.id.action_signin)
+        else if(id == R.id.action_signout)
         {
             mFirebaseAuth.signOut();
             return true;
@@ -113,22 +141,64 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_call_bva) {
-            // Handle the camera action
-        } else if (id == R.id.nav_email_bva) {
+        if (id == R.id.nav_call_bva)
+        {
+            // Handle the phone intent
+        }
+        else if (id == R.id.nav_email_bva)
+        {
 
-        } else if (id == R.id.nav_entire_history) {
+        }
+        else if (id == R.id.nav_entire_history)
+        {
 
-        } else if (id == R.id.nav_schedule_work) {
+        }
+        else if (id == R.id.nav_schedule_work)
+        {
 
-        } else if (id == R.id.nav_shop_bva) {
+        }
+        else if (id == R.id.nav_shop_bva)
+        {
 
-        } else if (id == R.id.nav_track_tests) {
+        }
+        else if (id == R.id.nav_track_tests)
+        {
 
+        }
+        else if (id == R.id.show_users)
+        {
+            UsersActivity.UsersFragment fragment = UsersActivity.UsersFragment.newInstance(user.getUid());
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_home, fragment)
+                    .commit();
+            //Intent intent = UsersActivity.makeIntent(this, user.getUid());
+            //startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private String getRole(final String email) {
+        if (("blueviewaquatics@gmail.com").equalsIgnoreCase(email)) {
+            return "admin";
+        }
+        return "user";
+    }
+
+    private void setupHomeMenu() {
+        Menu menu = navigationView.getMenu();
+        if(user.getRole() == "admin") {
+            menu.setGroupVisible(R.id.user_group, false);
+            menu.findItem(R.id.show_users).setVisible(true);
+            menu.findItem(R.id.user_communicate_item).setVisible(false);
+        }
+        else {
+            menu.setGroupVisible(R.id.user_group, true);
+            menu.findItem(R.id.show_users).setVisible(false);
+            menu.findItem(R.id.user_communicate_item).setVisible(true);
+        }
     }
 }

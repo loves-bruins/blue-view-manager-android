@@ -7,7 +7,7 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_signin"
-        android:title="@string/sign_in"
+        android:id="@+id/action_signout"
+        android:title="@string/sign_out"
         app:showAsAction="never" />
 </menu>

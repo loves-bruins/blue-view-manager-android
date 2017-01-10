@@ -9,9 +9,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import furtiveops.com.blueviewmanager.IntentConstants;
 import furtiveops.com.blueviewmanager.R;
+import furtiveops.com.blueviewmanager.adapters.UsersAdapter;
+import furtiveops.com.blueviewmanager.models.User;
 
 /**
  * Created by lorenrogers on 1/8/17.
@@ -42,6 +51,13 @@ public class UsersActivity extends AppCompatActivity {
 
     public static class UsersFragment extends Fragment {
 
+        @BindView(R.id.list)
+        ListView list;
+
+        Unbinder unbinder;
+
+        UsersAdapter adapter;
+
         public static UsersFragment newInstance(String userId) {
             UsersFragment fragment = new UsersFragment();
             Bundle bundle = new Bundle();
@@ -55,7 +71,30 @@ public class UsersActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             super.onCreateView(inflater, container, savedInstanceState);
             View view = getActivity().getLayoutInflater().inflate(R.layout.users_layout, container, false);
+
+            unbinder = ButterKnife.bind(this, view);
+
+            setupView();
             return view;
+        }
+
+        @Override
+        public void onDestroyView() {
+            super.onDestroyView();
+            unbinder.unbind();
+        }
+
+        private void setupView()
+        {
+            List<User> users = new ArrayList<User>();
+
+            users.add(new User("", "loren.rogers@gmail.com", "user"));
+            users.add(new User("", "blueviewaquatics@gmail.com", "admin"));
+            users.add(new User("", "lrogersego@gmail.com", "user"));
+
+            adapter = new UsersAdapter(getActivity(), users);
+
+            list.setAdapter(adapter);
         }
     }
 }
