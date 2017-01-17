@@ -1,5 +1,5 @@
-<android.support.v7.widget.RecyclerView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -7,4 +7,6 @@
     android:scrollbars="vertical"
     android:scrollbarStyle="outsideOverlay"
     android:listSelector="@drawable/ripple"
-    android:fadeScrollbars="true" />
+    android:fadeScrollbars="true" >
+
+</ListView>

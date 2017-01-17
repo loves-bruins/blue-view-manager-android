@@ -181,6 +181,16 @@ public class HomeActivity extends AppCompatActivity
         return true;
     }
 
+    public void navigateToUserHistory(final String userId) {
+        UserHistoryActivity.UserHistoryFragment fragment = UserHistoryActivity.UserHistoryFragment.newInstance(userId);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content_home, fragment)
+                .addToBackStack(UserHistoryActivity.UserHistoryFragment.TAG)
+                .commit();
+
+    }
+
     private String getRole(final String email) {
         if (("blueviewaquatics@gmail.com").equalsIgnoreCase(email)) {
             return "admin";

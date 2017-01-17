@@ -20,12 +20,12 @@ import furtiveops.com.blueviewmanager.models.User;
  * Created by lorenrogers on 1/10/17.
  */
 
-public class UsersAdapter extends ArrayAdapter<User> {
-    private final List<User> users;
+public class UserHistoryAdapter extends ArrayAdapter<String> {
+    private final List<String> items;
 
-    public UsersAdapter(Context context, List<User> users) {
-        super(context, R.layout.user_item_layout, users);
-        this.users = users;
+    public UserHistoryAdapter(Context context, List<String> items) {
+        super(context, R.layout.user_history_item_layout, items);
+        this.items = items;
     }
 
     @NonNull
@@ -38,7 +38,7 @@ public class UsersAdapter extends ArrayAdapter<User> {
         {
             final LayoutInflater viewInflater = (LayoutInflater)getContext()
                                                                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = viewInflater.inflate(R.layout.user_item_layout, parent, false);
+            view = viewInflater.inflate(R.layout.user_history_item_layout, parent, false);
             holder = new ViewHolder(view);
             view.setTag(holder);
         }
@@ -47,31 +47,27 @@ public class UsersAdapter extends ArrayAdapter<User> {
             holder = (ViewHolder)convertView.getTag();
         }
 
-        final User user = getItem(position);
-        holder.name.setText(user.getUserName());
-        holder.role.setText(user.getRole());
+        final String item = getItem(position);
+        holder.item.setText(item);
 
         return view;
     }
 
     @Override
     public int getCount() {
-        return users.size();
+        return items.size();
     }
 
     @Nullable
     @Override
-    public User getItem(int position) {
-        return users.get(position);
+    public String getItem(int position) {
+        return items.get(position);
     }
 
     public class ViewHolder
     {
-        @BindView(R.id.name)
-        TextView name;
-
-        @BindView(R.id.role)
-        TextView role;
+        @BindView(R.id.history_item)
+        TextView item;
 
         ViewHolder(View view)
         {

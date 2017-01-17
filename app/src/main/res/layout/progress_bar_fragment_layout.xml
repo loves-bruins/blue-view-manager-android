@@ -1,0 +1,26 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/progress_bar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="top"
+        android:layout_centerHorizontal="true"
+        android:gravity="top"
+        android:visibility="visible"
+        android:elevation="5dp"
+        android:background="@drawable/progress_bar_circle">
+
+        <ProgressBar
+            android:theme="@style/ProgressStyle"
+            android:id="@+id/progress_bar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
