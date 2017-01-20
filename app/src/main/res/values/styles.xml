@@ -42,6 +42,10 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="TextAppearance.SuperLarge.Bold" parent="TextAppearance.SuperLarge">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="TextAppearance.Large.Bold" parent="TextAppearance.Large">
         <item name="android:textStyle">bold</item>
     </style>

@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/history_item"
-        android:textAppearance="@style/TextAppearance.Large.Bold"
-        />
+        android:textAppearance="@style/TextAppearance.SuperLarge.Bold"
+        android:layout_margin="16dp"
+        android:drawableRight="@mipmap/ic_chevron_right_grey600_24dp"/>
 
 </LinearLayout>
