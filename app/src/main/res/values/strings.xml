@@ -76,4 +76,10 @@
     <string name="title_placeholder">Title</string>
     <string name="subtext_placeholder">subtitle</string>
     <string name="show_users">Show Users</string>
+
+    <string name="date_label">Date</string>
+    <string name="ammonia_level_label">Ammonia Level</string>
+    <string name="nitrate_level_label">Nitrate Level</string>
+    <string name="nitrite_level_label">Nitrite Level</string>
+    <string name="notes_label">Notes</string>
 </resources>
