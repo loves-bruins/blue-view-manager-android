@@ -54,6 +54,7 @@ public class UsersActivity extends AppCompatActivity {
     }
 
     public static class UsersFragment extends Fragment {
+        public static final String TAG = UsersFragment.class.getSimpleName();
 
         @BindView(R.id.list)
         RecyclerView list;

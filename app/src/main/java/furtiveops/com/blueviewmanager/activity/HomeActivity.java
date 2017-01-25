@@ -3,6 +3,8 @@ package furtiveops.com.blueviewmanager.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +20,8 @@ import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,10 +40,15 @@ public class HomeActivity extends AppCompatActivity
     @BindView(R.id.container)
     RelativeLayout contentHome;
 
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mFirebaseDatabaseReference;
 
     private User user;
+    private Fragment currentFragment = null;
+
     public static final int RC_LOGGED_IN = 100;
 
     @Override
@@ -67,13 +76,14 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                View newView = view;
+                int j;
+                j = 10;
             }
         });
-        fab.setVisibility(View.GONE);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -82,6 +92,18 @@ public class HomeActivity extends AppCompatActivity
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                int index = getSupportFragmentManager().getBackStackEntryCount() - 1;
+                FragmentManager.BackStackEntry backEntry = getSupportFragmentManager().getBackStackEntryAt(index);
+                String tag = backEntry.getName();
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+                int j;
+                j = 10;
+            }
+        });
     }
 
     @Override
@@ -111,7 +133,7 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
+        //getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
 
@@ -121,17 +143,6 @@ public class HomeActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        else if(id == R.id.action_signout)
-        {
-            mFirebaseAuth.signOut();
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -168,13 +179,23 @@ public class HomeActivity extends AppCompatActivity
         }
         else if (id == R.id.show_users)
         {
+            fab.setVisibility(View.VISIBLE);
+            fab.setImageResource(R.mipmap.ic_account_plus_white_24dp);
             UsersActivity.UsersFragment fragment = UsersActivity.UsersFragment.newInstance(user.getUid());
+            currentFragment = fragment;
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment)
+                    .addToBackStack(UsersActivity.UsersFragment.TAG)
                     .commit();
             //Intent intent = UsersActivity.makeIntent(this, user.getUid());
             //startActivity(intent);
+        }
+        else if(id == R.id.sign_out)
+        {
+            mFirebaseAuth.signOut();
+            Intent intent = SignInActivity.makeIntent(this);
+            startActivityForResult(intent, RC_LOGGED_IN);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -183,7 +204,10 @@ public class HomeActivity extends AppCompatActivity
     }
 
     public void navigateToUserHistory(final String userId) {
+        fab.setVisibility(View.GONE);
         UserHistoryActivity.UserHistoryFragment fragment = UserHistoryActivity.UserHistoryFragment.newInstance(userId);
+        currentFragment = fragment;
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container, fragment)
@@ -193,7 +217,12 @@ public class HomeActivity extends AppCompatActivity
     }
 
     public void navigateToCycleTestHistory(final String userId) {
+        fab.setVisibility(View.VISIBLE);
+        fab.setImageResource(R.mipmap.ic_test_tube_white_24dp);
+
         CycleTestsActivity.CycleTestsFragment fragment = CycleTestsActivity.CycleTestsFragment.newInstance(userId);
+        currentFragment = fragment;
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container, fragment)
@@ -215,11 +244,14 @@ public class HomeActivity extends AppCompatActivity
             menu.setGroupVisible(R.id.user_group, false);
             menu.findItem(R.id.show_users).setVisible(true);
             menu.findItem(R.id.user_communicate_item).setVisible(false);
+            fab.setVisibility(View.GONE);
+
         }
         else {
             menu.setGroupVisible(R.id.user_group, true);
             menu.findItem(R.id.show_users).setVisible(false);
             menu.findItem(R.id.user_communicate_item).setVisible(true);
+            fab.setVisibility(View.GONE);
         }
     }
 }
