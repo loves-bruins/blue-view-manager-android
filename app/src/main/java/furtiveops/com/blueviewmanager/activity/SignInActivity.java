@@ -56,8 +56,6 @@ public class SignInActivity extends AppCompatActivity  {
 
         setContentView(R.layout.signin_layout);
 
-        ButterKnife.setDebug(true);
-
         ButterKnife.bind(this);
 
         // Initialize FirebaseAuth
@@ -79,8 +77,7 @@ public class SignInActivity extends AppCompatActivity  {
         };
         // [END auth_state_listener]
 
-        userName.setText("blueviewaquatics@gmail.com");
-        password.setText("password");
+        setupView();
     }
 
     // [START on_start_add_listener]
@@ -128,5 +125,10 @@ public class SignInActivity extends AppCompatActivity  {
                         //finishActivity(HomeActivity.RC_LOGGED_IN);
                     }
                 });
+    }
+
+    protected void setupView() {
+//        userName.setText("blueviewaquatics@gmail.com");
+//        password.setText("password");
     }
 }

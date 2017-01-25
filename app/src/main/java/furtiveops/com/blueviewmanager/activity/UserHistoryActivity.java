@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -26,6 +26,7 @@ import furtiveops.com.blueviewmanager.adapters.UserHistoryAdapter;
  */
 
 public class UserHistoryActivity extends AppCompatActivity {
+
     public static Intent makeIntent(final Context context, final String userId) {
         Intent intent = new Intent(context, UserHistoryActivity.class);
         intent.putExtra(IntentConstants.USER_ID, userId);
@@ -45,8 +46,6 @@ public class UserHistoryActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();
-
-
     }
 
     public static class UserHistoryFragment extends Fragment {
@@ -57,7 +56,6 @@ public class UserHistoryActivity extends AppCompatActivity {
 
         private String userId;
         private UserHistoryAdapter adapter;
-
 
         public static UserHistoryFragment newInstance(final String userId) {
             UserHistoryFragment fragment = new UserHistoryFragment();
@@ -95,6 +93,15 @@ public class UserHistoryActivity extends AppCompatActivity {
 
             adapter = new UserHistoryAdapter(getActivity(), items);
             list.setAdapter(adapter);
+
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    if(position == 0) {
+                        ((HomeActivity)getActivity()).navigateToCycleTestHistory(userId);
+                    }
+                }
+            });
         }
     }
 }

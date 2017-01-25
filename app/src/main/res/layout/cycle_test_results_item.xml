@@ -1,116 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cycle_test_results_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:elevation="6dp">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/date_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.Large"
-                android:text="@string/date_label"
-                android:layout_margin="8dp"/>
-
-            <TextView
-                android:id="@+id/ammonia_level_label"
-                android:layout_below="@+id/date_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.Large"
-                android:text="@string/ammonia_level_label"
-                android:layout_margin="8dp"/>
-
-            <TextView
-                android:id="@+id/nitrate_level_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ammonia_level_label"
-                android:textAppearance="@style/TextAppearance.Large"
-                android:text="@string/nitrate_level_label"
-                android:layout_margin="8dp"/>
-
-            <TextView
-                android:id="@+id/nitrite_level_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/nitrate_level_label"
-                android:textAppearance="@style/TextAppearance.Large"
-                android:text="@string/nitrite_level_label"
-                android:layout_margin="8dp"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <TextView
-                android:id="@+id/date_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.Large"
-                android:layout_margin="8dp"/>
-
-            <TextView
-                android:id="@+id/ammonia_level_value"
-                android:layout_below="@+id/date_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.Large"
-                android:layout_margin="8dp"/>
-
-            <TextView
-                android:id="@+id/nitrate_level_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ammonia_level_value"
-                android:textAppearance="@style/TextAppearance.Large"
-                android:layout_margin="8dp"/>
-
-            <TextView
-                android:id="@+id/nitrite_level_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/nitrate_level_value"
-                android:textAppearance="@style/TextAppearance.Large"
-                android:layout_margin="8dp"/>
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
-    <RelativeLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/notes_label"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/notes_label"
-            android:textAppearance="@style/TextAppearance.Large"
-            android:layout_margin="8dp"/>
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <TextView
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/date_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Large"
+                    android:text="@string/date_label"
+                    android:layout_margin="4dp"/>
+
+                <TextView
+                    android:id="@+id/ammonia_level_label"
+                    android:layout_below="@+id/date_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Large"
+                    android:text="@string/ammonia_level_label"
+                    android:layout_margin="4dp"/>
+
+                <TextView
+                    android:id="@+id/nitrate_level_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ammonia_level_label"
+                    android:textAppearance="@style/TextAppearance.Large"
+                    android:text="@string/nitrate_level_label"
+                    android:layout_margin="4dp"/>
+
+                <TextView
+                    android:id="@+id/nitrite_level_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/nitrate_level_label"
+                    android:textAppearance="@style/TextAppearance.Large"
+                    android:text="@string/nitrite_level_label"
+                    android:layout_margin="4dp"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/date_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Large"
+                    android:layout_margin="4dp"/>
+
+                <TextView
+                    android:id="@+id/ammonia_level_value"
+                    android:layout_below="@+id/date_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Large"
+                    android:layout_margin="4dp"/>
+
+                <TextView
+                    android:id="@+id/nitrate_level_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ammonia_level_value"
+                    android:textAppearance="@style/TextAppearance.Large"
+                    android:layout_margin="4dp"/>
+
+                <TextView
+                    android:id="@+id/nitrite_level_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/nitrate_level_value"
+                    android:textAppearance="@style/TextAppearance.Large"
+                    android:layout_margin="4dp"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.Large"
-            android:layout_below="@+id/notes_label"
-            android:layout_margin="8dp"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-            android:lines="5"
-            android:maxLines="5" />
-    </RelativeLayout>
+            android:layout_height="wrap_content">
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/notes_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/notes_label"
+                android:textAppearance="@style/TextAppearance.Large"
+                android:layout_margin="4dp"/>
+
+            <TextView
+                android:id="@+id/notes_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.Large"
+                android:layout_below="@+id/notes_label"
+                android:layout_margin="4dp"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                android:lines="5"
+                android:maxLines="5" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

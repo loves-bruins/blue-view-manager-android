@@ -36,11 +36,12 @@ public class UserViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void bind(User user, final ItemClickListener listener)
+    public void bind(User user, final String userId, final ItemClickListener listener)
     {
         this.listener = listener;
         name.setText(user.getUserName());
         role.setText(user.getRole());
+        user.setUid(userId);
         itemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

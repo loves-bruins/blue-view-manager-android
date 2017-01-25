@@ -191,6 +191,16 @@ public class HomeActivity extends AppCompatActivity
 
     }
 
+    public void navigateToCycleTestHistory(final String userId) {
+        CycleTestsActivity.CycleTestsFragment fragment = CycleTestsActivity.CycleTestsFragment.newInstance(userId);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content_home, fragment)
+                .addToBackStack(CycleTestsActivity.CycleTestsFragment.TAG)
+                .commit();
+
+    }
+
     private String getRole(final String email) {
         if (("blueviewaquatics@gmail.com").equalsIgnoreCase(email)) {
             return "admin";

@@ -6,12 +6,12 @@ package furtiveops.com.blueviewmanager.models;
 
 public class CycleTest {
 
-    String uid;
-    String date;
-    Double ammonia;
-    Double nitrate;
-    Double nitrite;
-    String notes;
+    protected String uid;
+    protected String date;
+    protected Double ammonia;
+    protected Double nitrate;
+    protected Double nitrite;
+    protected String notes;
 
     public CycleTest() {
 
@@ -24,5 +24,29 @@ public class CycleTest {
         this.nitrate = nitrate;
         this.nitrite = nitrite;
         this.notes = notes;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public Double getAmmonia() {
+        return ammonia;
+    }
+
+    public Double getNitrate() {
+        return nitrate;
+    }
+
+    public Double getNitrite() {
+        return nitrite;
+    }
+
+    public String getNotes() {
+        return notes;
     }
 }

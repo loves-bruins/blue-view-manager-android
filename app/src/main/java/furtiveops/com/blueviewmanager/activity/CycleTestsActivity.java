@@ -23,18 +23,17 @@ import butterknife.Unbinder;
 import furtiveops.com.blueviewmanager.IntentConstants;
 import furtiveops.com.blueviewmanager.R;
 import furtiveops.com.blueviewmanager.dialog.ProgressDialogFragment;
-import furtiveops.com.blueviewmanager.models.User;
-import furtiveops.com.blueviewmanager.viewholders.UserViewHolder;
+import furtiveops.com.blueviewmanager.models.CycleTest;
+import furtiveops.com.blueviewmanager.viewholders.CycleTestViewHolder;
 
 /**
- * Created by lorenrogers on 1/8/17.
+ * Created by lorenrogers on 1/25/17.
  */
 
-public class UsersActivity extends AppCompatActivity {
-    private static String LOG_TAG = UsersActivity.class.getSimpleName();
+public class CycleTestsActivity extends AppCompatActivity {
 
-    public static Intent makeIntent(Context context, String userId) {
-        Intent intent = new Intent(context, UsersActivity.class);
+    public static Intent makeIntent(final Context context, final String userId) {
+        Intent intent = new Intent(context, CycleTestsActivity.class);
         intent.putExtra(IntentConstants.USER_ID, userId);
         return intent;
     }
@@ -45,7 +44,7 @@ public class UsersActivity extends AppCompatActivity {
         setContentView(R.layout.base_layout);
         final String userId = getIntent().getStringExtra(IntentConstants.USER_ID);
 
-        UsersFragment fragment = UsersFragment.newInstance(userId);
+        CycleTestsFragment fragment = CycleTestsFragment.newInstance(userId);
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -53,7 +52,8 @@ public class UsersActivity extends AppCompatActivity {
                 .commit();
     }
 
-    public static class UsersFragment extends Fragment {
+    public static class CycleTestsFragment extends Fragment {
+        public static final String TAG = CycleTestsFragment.class.getSimpleName();
 
         @BindView(R.id.list)
         RecyclerView list;
@@ -61,27 +61,33 @@ public class UsersActivity extends AppCompatActivity {
         private Unbinder unbinder;
 
         private ProgressDialogFragment progressFragment;
+        private String userId;
 
         // [START define_database_reference]
         private DatabaseReference mDatabase;
         // [END define_database_reference]
 
-        private FirebaseRecyclerAdapter<User, UserViewHolder> mAdapter;
+        private FirebaseRecyclerAdapter<CycleTest, CycleTestViewHolder> mAdapter;
         private LinearLayoutManager mManager;
 
-        public static UsersFragment newInstance(String userId) {
-            UsersFragment fragment = new UsersFragment();
+        public static CycleTestsFragment newInstance(final String userId)
+        {
+            CycleTestsFragment fragment = new CycleTestsFragment();
             Bundle bundle = new Bundle();
             bundle.putString(IntentConstants.USER_ID, userId);
             fragment.setArguments(bundle);
             return fragment;
         }
 
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            userId = getArguments().getString(IntentConstants.USER_ID);
+        }
+
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            super.onCreateView(inflater, container, savedInstanceState);
-
             View view = inflater.inflate(R.layout.generic_list_layout, container, false);
 
             unbinder = ButterKnife.bind(this, view);
@@ -118,17 +124,17 @@ public class UsersActivity extends AppCompatActivity {
             list.setLayoutManager(mManager);
 
             showProgress();
-            final Query usersQuery = mDatabase.child("users").limitToFirst(100);
+            Query usersQuery = mDatabase.child("tests").child(userId).child("cycle_tests").orderByKey();
 
-            mAdapter = new FirebaseRecyclerAdapter<User, UserViewHolder>(User.class, R.layout.user_item_layout, UserViewHolder.class, usersQuery) {
+            mAdapter = new FirebaseRecyclerAdapter<CycleTest, CycleTestViewHolder>(CycleTest.class, R.layout.cycle_test_results_item, CycleTestViewHolder.class, usersQuery) {
                 @Override
-                protected void populateViewHolder(UserViewHolder viewHolder, User model, final int position) {
+                protected void populateViewHolder(CycleTestViewHolder viewHolder, CycleTest model, final int position) {
                     final DatabaseReference ref = getRef(position);
-                    viewHolder.bind(model, getRef(position).getKey(),  new UserViewHolder.ItemClickListener() {
+                    viewHolder.bind(model, new CycleTestViewHolder.ItemClickListener() {
                         @Override
                         public void onClick(View v) {
-                            User user = mAdapter.getItem(position);
-                            ((HomeActivity)getActivity()).navigateToUserHistory(ref.getKey());
+                            CycleTest user = mAdapter.getItem(position);
+                            ((HomeActivity)getActivity()).navigateToUserHistory(user.getUid());
                         }
                     });
                     hideProgress();

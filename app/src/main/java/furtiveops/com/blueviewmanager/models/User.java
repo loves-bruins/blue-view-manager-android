@@ -26,6 +26,10 @@ public class User {
         return uid;
     }
 
+    public void setUid(final String uid) {
+        this.uid = uid;
+    }
+
     public String getUserName() {
         return userName;
     }
