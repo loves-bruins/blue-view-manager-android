@@ -37,7 +37,7 @@ public class UserHistoryActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.base_layout);
+        setContentView(R.layout.home_screen_content_layout);
 
         final String userId = getIntent().getStringExtra(IntentConstants.USER_ID);
         UserHistoryFragment fragment = UserHistoryFragment.newInstance(userId);

@@ -3,6 +3,7 @@ package furtiveops.com.blueviewmanager.viewholders;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -32,7 +33,7 @@ public class CycleTestViewHolder extends RecyclerView.ViewHolder {
     TextView notes;
 
     @BindView(R.id.cycle_test_results_layout)
-    CardView itemLayout;
+    FrameLayout itemLayout;
 
     public interface ItemClickListener {
         void onClick(View v);

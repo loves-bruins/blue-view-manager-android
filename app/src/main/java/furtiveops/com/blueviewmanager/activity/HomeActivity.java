@@ -3,7 +3,6 @@ package furtiveops.com.blueviewmanager.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 
+import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -33,7 +33,7 @@ public class HomeActivity extends AppCompatActivity
     @BindView(R.id.nav_view)
     NavigationView navigationView;
 
-    @BindView(R.id.content_home)
+    @BindView(R.id.container)
     RelativeLayout contentHome;
 
     private FirebaseAuth mFirebaseAuth;
@@ -46,7 +46,7 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.home_screen_entire_layout);
 
         ButterKnife.bind(this);
         // Initialize Firebase Auth
@@ -73,6 +73,7 @@ public class HomeActivity extends AppCompatActivity
             public void onClick(View view) {
             }
         });
+        fab.setVisibility(View.GONE);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -170,7 +171,7 @@ public class HomeActivity extends AppCompatActivity
             UsersActivity.UsersFragment fragment = UsersActivity.UsersFragment.newInstance(user.getUid());
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.content_home, fragment)
+                    .replace(R.id.container, fragment)
                     .commit();
             //Intent intent = UsersActivity.makeIntent(this, user.getUid());
             //startActivity(intent);
@@ -185,7 +186,7 @@ public class HomeActivity extends AppCompatActivity
         UserHistoryActivity.UserHistoryFragment fragment = UserHistoryActivity.UserHistoryFragment.newInstance(userId);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content_home, fragment)
+                .replace(R.id.container, fragment)
                 .addToBackStack(UserHistoryActivity.UserHistoryFragment.TAG)
                 .commit();
 
@@ -195,7 +196,7 @@ public class HomeActivity extends AppCompatActivity
         CycleTestsActivity.CycleTestsFragment fragment = CycleTestsActivity.CycleTestsFragment.newInstance(userId);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content_home, fragment)
+                .replace(R.id.container, fragment)
                 .addToBackStack(CycleTestsActivity.CycleTestsFragment.TAG)
                 .commit();
 

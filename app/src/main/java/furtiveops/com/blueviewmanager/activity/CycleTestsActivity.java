@@ -41,7 +41,7 @@ public class CycleTestsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.base_layout);
+        setContentView(R.layout.home_screen_content_layout);
         final String userId = getIntent().getStringExtra(IntentConstants.USER_ID);
 
         CycleTestsFragment fragment = CycleTestsFragment.newInstance(userId);
@@ -88,7 +88,7 @@ public class CycleTestsActivity extends AppCompatActivity {
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.generic_list_layout, container, false);
+            View view = inflater.inflate(R.layout.generic_recycler_view_layout, container, false);
 
             unbinder = ButterKnife.bind(this, view);
 
