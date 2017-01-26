@@ -49,6 +49,7 @@ public class HomeActivity extends AppCompatActivity
     private String currentFragmentTag;
 
     public static final int RC_LOGGED_IN = 100;
+    public static final int RC_CREATED_USER = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +79,7 @@ public class HomeActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                View newView = view;
-                int j;
-                j = 10;
+                fabClick(currentFragmentTag);
             }
         });
 
@@ -122,9 +121,15 @@ public class HomeActivity extends AppCompatActivity
                 final String userId = data.getStringExtra(IntentConstants.USER_ID);
                 final String email = data.getStringExtra(IntentConstants.USER_EMAIL);
                 user = new User(userId, email, getRole(email));
-
             }
             setupHomeMenu();
+        }
+        else if(RC_CREATED_USER == requestCode && Activity.RESULT_OK == resultCode){
+            if(null != data) {
+                final String userId = data.getStringExtra(IntentConstants.USER_ID);
+                final String email = data.getStringExtra(IntentConstants.USER_EMAIL);
+                User newUser = new User(userId, email, getRole(email));
+            }
         }
     }
 
@@ -194,8 +199,6 @@ public class HomeActivity extends AppCompatActivity
                     .replace(R.id.container, fragment, UsersActivity.UsersFragment.TAG)
                     .addToBackStack(UsersActivity.UsersFragment.TAG)
                     .commit();
-
-            //getSupportFragmentManager().executePendingTransactions();
         }
         else if(id == R.id.sign_out)
         {
@@ -217,8 +220,6 @@ public class HomeActivity extends AppCompatActivity
                 .replace(R.id.container, fragment, UserHistoryActivity.UserHistoryFragment.TAG)
                 .addToBackStack(UserHistoryActivity.UserHistoryFragment.TAG)
                 .commit();
-
-        //getSupportFragmentManager().executePendingTransactions();
     }
 
     public void navigateToCycleTestHistory(final String userId) {
@@ -230,8 +231,6 @@ public class HomeActivity extends AppCompatActivity
                 .replace(R.id.container, fragment, CycleTestsActivity.CycleTestsFragment.TAG)
                 .addToBackStack(CycleTestsActivity.CycleTestsFragment.TAG)
                 .commit();
-
-        //getSupportFragmentManager().executePendingTransactions();
     }
 
     public void navigateToServices(final String userId) {
@@ -243,8 +242,6 @@ public class HomeActivity extends AppCompatActivity
                 .replace(R.id.container, fragment, ServicesActivity.ServicesFragment.TAG)
                 .addToBackStack(ServicesActivity.ServicesFragment.TAG)
                 .commit();
-
-       // getSupportFragmentManager().executePendingTransactions();
     }
 
     private String getRole(final String email) {
@@ -305,5 +302,27 @@ public class HomeActivity extends AppCompatActivity
             fab.setLayoutParams(params);
             fab.requestLayout();
         }
+    }
+
+    private void fabClick(final String fragmentId) {
+        if(UsersActivity.UsersFragment.TAG.equals(fragmentId))
+        {
+            Intent intent = SignUpActivity.makeInent(this);
+            startActivityForResult(intent, RC_CREATED_USER);
+        }
+        else if(UserHistoryActivity.UserHistoryFragment.TAG.equals(fragmentId))
+        {
+        }
+        else if(CycleTestsActivity.CycleTestsFragment.TAG.equals(fragmentId))
+        {
+        }
+        else if(ServicesActivity.ServicesFragment.TAG.equals(fragmentId))
+        {
+        }
+    }
+
+    private void insertObjectIntoDatabase()
+    {
+
     }
 }

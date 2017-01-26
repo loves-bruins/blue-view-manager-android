@@ -152,5 +152,10 @@ public class UsersActivity extends AppCompatActivity {
                 progressFragment.dismiss();
             }
         }
+
+        public void createUserInDatabase(User user)
+        {
+
+        }
     }
 }

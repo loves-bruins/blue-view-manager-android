@@ -4,10 +4,13 @@ package furtiveops.com.blueviewmanager.models;
  * Created by lorenrogers on 11/1/16.
  */
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
-public class User {
+public class User implements Parcelable{
     protected String uid;
     protected String userName;
     protected String role;
@@ -20,6 +23,12 @@ public class User {
         this.uid = uid;
         this.userName = userName;
         this.role  = role;
+    }
+
+    public User(Parcel in) {
+        uid = in.readString();
+        userName = in.readString();
+        role = in.readString();
     }
 
     public String getUid() {
@@ -37,4 +46,28 @@ public class User {
     public String getRole() {
         return role;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(uid);
+        dest.writeString(userName);
+        dest.writeString(role);
+    }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(final Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(final int size) {
+            return new User[size];
+        }
+    };
 }

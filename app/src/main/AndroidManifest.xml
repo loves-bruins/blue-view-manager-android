@@ -22,9 +22,7 @@
         <activity android:name=".activity.SignInActivity"
             android:windowSoftInputMode="adjustPan"/>
 
-        <activity android:name=".activity.EmailPasswordActivity"/>
-
-        <activity android:name=".activity.UsersActivity"></activity>
+        <activity android:name=".activity.SignUpActivity"></activity>
     </application>
 
 </manifest>
