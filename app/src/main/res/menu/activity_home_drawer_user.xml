@@ -14,9 +14,9 @@
         android:checkableBehavior="single"
         android:visible="true">
         <item
-            android:id="@+id/nav_entire_history"
-            android:icon="@mipmap/ic_view_list_black_24dp"
-            android:title="Entire History" />
+            android:id="@+id/nav_service_history"
+            android:icon="@mipmap/ic_screwdriver_black_24dp"
+            android:title="Service History" />
         <item
             android:id="@+id/nav_track_tests"
             android:icon="@mipmap/ic_track_changes_black_24dp"

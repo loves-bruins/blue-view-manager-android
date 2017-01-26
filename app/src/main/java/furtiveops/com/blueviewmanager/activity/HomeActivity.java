@@ -3,6 +3,7 @@ package furtiveops.com.blueviewmanager.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -20,8 +21,6 @@ import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -161,7 +160,7 @@ public class HomeActivity extends AppCompatActivity
         {
 
         }
-        else if (id == R.id.nav_entire_history)
+        else if (id == R.id.nav_service_history)
         {
 
         }
@@ -181,6 +180,12 @@ public class HomeActivity extends AppCompatActivity
         {
             fab.setVisibility(View.VISIBLE);
             fab.setImageResource(R.mipmap.ic_account_plus_white_24dp);
+
+            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)fab.getLayoutParams();
+            params.setMargins(0, 0, params.rightMargin, 42);
+            fab.setLayoutParams(params);
+            fab.requestLayout();
+
             UsersActivity.UsersFragment fragment = UsersActivity.UsersFragment.newInstance(user.getUid());
             currentFragment = fragment;
             getSupportFragmentManager()
@@ -206,6 +211,12 @@ public class HomeActivity extends AppCompatActivity
     public void navigateToUserHistory(final String userId) {
         fab.setVisibility(View.GONE);
         UserHistoryActivity.UserHistoryFragment fragment = UserHistoryActivity.UserHistoryFragment.newInstance(userId);
+
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)fab.getLayoutParams();
+        params.setMargins(0, 0, params.rightMargin, 42);
+        fab.setLayoutParams(params);
+        fab.requestLayout();
+
         currentFragment = fragment;
 
         getSupportFragmentManager()
@@ -220,6 +231,11 @@ public class HomeActivity extends AppCompatActivity
         fab.setVisibility(View.VISIBLE);
         fab.setImageResource(R.mipmap.ic_test_tube_white_24dp);
 
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)fab.getLayoutParams();
+        params.setMargins(0, 0, params.rightMargin, 42);
+        fab.setLayoutParams(params);
+        fab.requestLayout();
+
         CycleTestsActivity.CycleTestsFragment fragment = CycleTestsActivity.CycleTestsFragment.newInstance(userId);
         currentFragment = fragment;
 
@@ -232,8 +248,12 @@ public class HomeActivity extends AppCompatActivity
     }
 
     public void navigateToServices(final String userId) {
-        fab.setVisibility(View.GONE);
-        fab.setImageResource(R.mipmap.ic_test_tube_white_24dp);
+        fab.setVisibility(View.VISIBLE);
+        fab.setImageResource(R.mipmap.ic_screwdriver_white_24dp);
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)fab.getLayoutParams();
+        params.setMargins(0, 0, params.rightMargin, 110);
+        fab.setLayoutParams(params);
+        fab.requestLayout();
 
         ServicesActivity.ServicesFragment fragment = ServicesActivity.ServicesFragment.newInstance(userId);
         currentFragment = fragment;
@@ -254,19 +274,19 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void setupHomeMenu() {
+        fab.setVisibility(View.GONE);
+
         Menu menu = navigationView.getMenu();
         if(user.getRole() == "admin") {
             menu.setGroupVisible(R.id.user_group, false);
             menu.findItem(R.id.show_users).setVisible(true);
             menu.findItem(R.id.user_communicate_item).setVisible(false);
-            fab.setVisibility(View.GONE);
 
         }
         else {
             menu.setGroupVisible(R.id.user_group, true);
             menu.findItem(R.id.show_users).setVisible(false);
             menu.findItem(R.id.user_communicate_item).setVisible(true);
-            fab.setVisibility(View.GONE);
         }
     }
 }
