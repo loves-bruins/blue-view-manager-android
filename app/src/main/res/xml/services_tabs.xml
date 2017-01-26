@@ -1,0 +1,18 @@
+<tabs>
+    <tab
+        id="@+id/tab_water_change"
+        icon="@mipmap/ic_water_pump_black_24dp"
+        title="Water Change" />
+    <tab
+        id="@+id/tab_algae_scrape"
+        icon="@mipmap/ic_biohazard_black_24dp"
+        title="Algae Scrape" />
+    <tab
+        id="@+id/tab_general_cleaning"
+        icon="@mipmap/ic_auto_fix_black_24dp"
+        title="General Cleaning" />
+    <tab
+        id="@+id/tab_sand_siphon"
+        icon="@mipmap/ic_filter_outline_black_24dp"
+        title="Sand Siphon" />
+</tabs>

@@ -100,6 +100,10 @@ public class UserHistoryActivity extends AppCompatActivity {
                     if(position == 0) {
                         ((HomeActivity)getActivity()).navigateToCycleTestHistory(userId);
                     }
+                    else if(position == 1)
+                    {
+                        ((HomeActivity)getActivity()).navigateToServices(userId);
+                    }
                 }
             });
         }

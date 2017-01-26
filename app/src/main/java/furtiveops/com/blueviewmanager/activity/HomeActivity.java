@@ -231,6 +231,21 @@ public class HomeActivity extends AppCompatActivity
 
     }
 
+    public void navigateToServices(final String userId) {
+        fab.setVisibility(View.GONE);
+        fab.setImageResource(R.mipmap.ic_test_tube_white_24dp);
+
+        ServicesActivity.ServicesFragment fragment = ServicesActivity.ServicesFragment.newInstance(userId);
+        currentFragment = fragment;
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, fragment)
+                .addToBackStack(ServicesActivity.ServicesFragment.TAG)
+                .commit();
+
+    }
+
     private String getRole(final String email) {
         if (("blueviewaquatics@gmail.com").equalsIgnoreCase(email)) {
             return "admin";
