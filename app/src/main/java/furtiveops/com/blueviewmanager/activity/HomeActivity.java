@@ -46,7 +46,7 @@ public class HomeActivity extends AppCompatActivity
     private DatabaseReference mFirebaseDatabaseReference;
 
     private User user;
-    private Fragment currentFragment = null;
+    private String currentFragmentTag;
 
     public static final int RC_LOGGED_IN = 100;
 
@@ -97,12 +97,21 @@ public class HomeActivity extends AppCompatActivity
             public void onBackStackChanged() {
                 int index = getSupportFragmentManager().getBackStackEntryCount() - 1;
                 FragmentManager.BackStackEntry backEntry = getSupportFragmentManager().getBackStackEntryAt(index);
-                String tag = backEntry.getName();
-                Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
-                int j;
-                j = 10;
+                currentFragmentTag = backEntry.getName();
+                updateFAB(currentFragmentTag);
             }
         });
+
+        if (null != savedInstanceState) {
+            currentFragmentTag = savedInstanceState.getString(IntentConstants.CURRENT_FRAGMENT_TAG);
+            updateFAB(currentFragmentTag);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(IntentConstants.CURRENT_FRAGMENT_TAG, currentFragmentTag);
     }
 
     @Override
@@ -178,23 +187,15 @@ public class HomeActivity extends AppCompatActivity
         }
         else if (id == R.id.show_users)
         {
-            fab.setVisibility(View.VISIBLE);
-            fab.setImageResource(R.mipmap.ic_account_plus_white_24dp);
-
-            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)fab.getLayoutParams();
-            params.setMargins(0, 0, params.rightMargin, 42);
-            fab.setLayoutParams(params);
-            fab.requestLayout();
-
             UsersActivity.UsersFragment fragment = UsersActivity.UsersFragment.newInstance(user.getUid());
-            currentFragment = fragment;
+
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.container, fragment)
+                    .replace(R.id.container, fragment, UsersActivity.UsersFragment.TAG)
                     .addToBackStack(UsersActivity.UsersFragment.TAG)
                     .commit();
-            //Intent intent = UsersActivity.makeIntent(this, user.getUid());
-            //startActivity(intent);
+
+            //getSupportFragmentManager().executePendingTransactions();
         }
         else if(id == R.id.sign_out)
         {
@@ -209,61 +210,41 @@ public class HomeActivity extends AppCompatActivity
     }
 
     public void navigateToUserHistory(final String userId) {
-        fab.setVisibility(View.GONE);
         UserHistoryActivity.UserHistoryFragment fragment = UserHistoryActivity.UserHistoryFragment.newInstance(userId);
-
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)fab.getLayoutParams();
-        params.setMargins(0, 0, params.rightMargin, 42);
-        fab.setLayoutParams(params);
-        fab.requestLayout();
-
-        currentFragment = fragment;
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, fragment)
+                .replace(R.id.container, fragment, UserHistoryActivity.UserHistoryFragment.TAG)
                 .addToBackStack(UserHistoryActivity.UserHistoryFragment.TAG)
                 .commit();
 
+        //getSupportFragmentManager().executePendingTransactions();
     }
 
     public void navigateToCycleTestHistory(final String userId) {
-        fab.setVisibility(View.VISIBLE);
-        fab.setImageResource(R.mipmap.ic_test_tube_white_24dp);
-
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)fab.getLayoutParams();
-        params.setMargins(0, 0, params.rightMargin, 42);
-        fab.setLayoutParams(params);
-        fab.requestLayout();
 
         CycleTestsActivity.CycleTestsFragment fragment = CycleTestsActivity.CycleTestsFragment.newInstance(userId);
-        currentFragment = fragment;
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, fragment)
+                .replace(R.id.container, fragment, CycleTestsActivity.CycleTestsFragment.TAG)
                 .addToBackStack(CycleTestsActivity.CycleTestsFragment.TAG)
                 .commit();
 
+        //getSupportFragmentManager().executePendingTransactions();
     }
 
     public void navigateToServices(final String userId) {
-        fab.setVisibility(View.VISIBLE);
-        fab.setImageResource(R.mipmap.ic_screwdriver_white_24dp);
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)fab.getLayoutParams();
-        params.setMargins(0, 0, params.rightMargin, 110);
-        fab.setLayoutParams(params);
-        fab.requestLayout();
 
         ServicesActivity.ServicesFragment fragment = ServicesActivity.ServicesFragment.newInstance(userId);
-        currentFragment = fragment;
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, fragment)
+                .replace(R.id.container, fragment, ServicesActivity.ServicesFragment.TAG)
                 .addToBackStack(ServicesActivity.ServicesFragment.TAG)
                 .commit();
 
+       // getSupportFragmentManager().executePendingTransactions();
     }
 
     private String getRole(final String email) {
@@ -287,6 +268,42 @@ public class HomeActivity extends AppCompatActivity
             menu.setGroupVisible(R.id.user_group, true);
             menu.findItem(R.id.show_users).setVisible(false);
             menu.findItem(R.id.user_communicate_item).setVisible(true);
+        }
+    }
+
+    private void updateFAB(final String fragmentId) {
+        if(UsersActivity.UsersFragment.TAG.equals(fragmentId))
+        {
+            fab.setVisibility(View.VISIBLE);
+            fab.setImageResource(R.mipmap.ic_account_plus_white_24dp);
+
+            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)fab.getLayoutParams();
+            params.setMargins(0, 0, params.rightMargin, 42);
+            fab.setLayoutParams(params);
+            fab.requestLayout();
+        }
+        else if(UserHistoryActivity.UserHistoryFragment.TAG.equals(fragmentId))
+        {
+            fab.setVisibility(View.GONE);
+        }
+        else if(CycleTestsActivity.CycleTestsFragment.TAG.equals(fragmentId))
+        {
+            fab.setVisibility(View.VISIBLE);
+            fab.setImageResource(R.mipmap.ic_test_tube_white_24dp);
+
+            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)fab.getLayoutParams();
+            params.setMargins(0, 0, params.rightMargin, 42);
+            fab.setLayoutParams(params);
+            fab.requestLayout();
+        }
+        else if(ServicesActivity.ServicesFragment.TAG.equals(fragmentId))
+        {
+            fab.setVisibility(View.VISIBLE);
+            fab.setImageResource(R.mipmap.ic_screwdriver_white_24dp);
+            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)fab.getLayoutParams();
+            params.setMargins(0, 0, params.rightMargin, 110);
+            fab.setLayoutParams(params);
+            fab.requestLayout();
         }
     }
 }
