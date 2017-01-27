@@ -1,8 +1,10 @@
 package furtiveops.com.blueviewmanager.activity;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +14,8 @@ import android.widget.EditText;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.nispok.snackbar.Snackbar;
@@ -22,6 +26,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import furtiveops.com.blueviewmanager.IntentConstants;
 import furtiveops.com.blueviewmanager.R;
+import furtiveops.com.blueviewmanager.contentProviders.SettingsContract;
 
 /**
  * Created by lorenrogers on 12/1/16.
@@ -100,6 +105,7 @@ public class SignInActivity extends AppCompatActivity  {
     // [END on_stop_remove_listener]
     @OnClick (R.id.login)
     public void signIn() {
+
         mAuth.signInWithEmailAndPassword(userName.getText().toString(), password.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -116,9 +122,11 @@ public class SignInActivity extends AppCompatActivity  {
                         }
                         else {
                             final AuthResult authResult = task.getResult();
+
                             Intent intent = new Intent();
                             intent.putExtra(IntentConstants.USER_ID, authResult.getUser().getUid());
                             intent.putExtra(IntentConstants.USER_EMAIL, authResult.getUser().getEmail());
+                            intent.putExtra(IntentConstants.PASSWORD, password.getText().toString());
                             setResult(Activity.RESULT_OK, intent);
                         }
                         finish();

@@ -1,8 +1,12 @@
 package furtiveops.com.blueviewmanager.activity;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +22,10 @@ import android.view.MenuItem;
 import android.widget.RelativeLayout;
 
 import com.github.clans.fab.FloatingActionButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -26,6 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import furtiveops.com.blueviewmanager.IntentConstants;
 import furtiveops.com.blueviewmanager.R;
+import furtiveops.com.blueviewmanager.contentProviders.SettingsContract;
 import furtiveops.com.blueviewmanager.models.User;
 
 public class HomeActivity extends AppCompatActivity
@@ -47,9 +56,13 @@ public class HomeActivity extends AppCompatActivity
 
     private User user;
     private String currentFragmentTag;
+    private FirebaseUser firebaseUser = null;
 
     public static final int RC_LOGGED_IN = 100;
     public static final int RC_CREATED_USER = 101;
+
+    private String adminUserName;
+    private String adminPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +73,7 @@ public class HomeActivity extends AppCompatActivity
         ButterKnife.bind(this);
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser;
         firebaseUser = mFirebaseAuth.getCurrentUser();
-
         if (firebaseUser == null) {
             // Not signed in, launch the Sign In activity
             Intent intent = SignInActivity.makeIntent(this);
@@ -120,7 +131,12 @@ public class HomeActivity extends AppCompatActivity
             if(null != data) {
                 final String userId = data.getStringExtra(IntentConstants.USER_ID);
                 final String email = data.getStringExtra(IntentConstants.USER_EMAIL);
+                final String password = data.getStringExtra(IntentConstants.PASSWORD);
+
                 user = new User(userId, email, getRole(email));
+                if(user.getRole().equals("admin"))
+                    updateSettings(email, password);
+
             }
             setupHomeMenu();
         }
@@ -129,6 +145,30 @@ public class HomeActivity extends AppCompatActivity
                 final String userId = data.getStringExtra(IntentConstants.USER_ID);
                 final String email = data.getStringExtra(IntentConstants.USER_EMAIL);
                 User newUser = new User(userId, email, getRole(email));
+
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag(UsersActivity.UsersFragment.TAG);
+                if(null != fragment)
+                {
+                    UsersActivity.UsersFragment usersFragment = (UsersActivity.UsersFragment)fragment;
+                    usersFragment.createUserInDatabase(newUser);
+                }
+
+                mFirebaseAuth.signOut();
+
+                mFirebaseAuth.signInWithEmailAndPassword(adminUserName, adminPassword).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()) {
+                            int j;
+                            j = 10;
+                        }
+                        else
+                        {
+                            int q;
+                            q = 10;
+                        }
+                    }
+                });
             }
         }
     }
@@ -212,6 +252,14 @@ public class HomeActivity extends AppCompatActivity
         return true;
     }
 
+    private void updateSettings (final String userName, final String password) {
+        ContentValues values = new ContentValues();
+        values.put(SettingsContract.Settings.COLUMN_NAME_USERNAME, userName);
+        values.put(SettingsContract.Settings.COLUMN_NAME_PASSWORD, password);
+
+        Uri uri = this.getContentResolver().insert(SettingsContract.Settings.CONTENT_URI, values);
+    }
+
     public void navigateToUserHistory(final String userId) {
         UserHistoryActivity.UserHistoryFragment fragment = UserHistoryActivity.UserHistoryFragment.newInstance(userId);
 
@@ -252,8 +300,22 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void setupHomeMenu() {
+
         fab.setVisibility(View.GONE);
 
+        Cursor c = this.getContentResolver().query(SettingsContract.Settings.CONTENT_URI,
+                SettingsContract.Settings.PROJECTION_ALL,
+                "user_name = ?", new String[]{user.getUserName()},
+                SettingsContract.Settings.DEFAULT_SORT_ORDER);
+
+        if(c != null && c.getCount() > 0) {
+            while (c.moveToNext()) {
+                adminUserName = c.getString(1);
+                adminPassword = c.getString(2);
+                int q;
+                q = 10;
+            }
+        }
         Menu menu = navigationView.getMenu();
         if(user.getRole() == "admin") {
             menu.setGroupVisible(R.id.user_group, false);
@@ -307,7 +369,7 @@ public class HomeActivity extends AppCompatActivity
     private void fabClick(final String fragmentId) {
         if(UsersActivity.UsersFragment.TAG.equals(fragmentId))
         {
-            Intent intent = SignUpActivity.makeInent(this);
+            Intent intent = SignUpActivity.makeInent(this, user);
             startActivityForResult(intent, RC_CREATED_USER);
         }
         else if(UserHistoryActivity.UserHistoryFragment.TAG.equals(fragmentId))
@@ -319,10 +381,5 @@ public class HomeActivity extends AppCompatActivity
         else if(ServicesActivity.ServicesFragment.TAG.equals(fragmentId))
         {
         }
-    }
-
-    private void insertObjectIntoDatabase()
-    {
-
     }
 }

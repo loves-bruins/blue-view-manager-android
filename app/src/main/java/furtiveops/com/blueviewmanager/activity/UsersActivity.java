@@ -8,14 +8,23 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -153,9 +162,31 @@ public class UsersActivity extends AppCompatActivity {
             }
         }
 
-        public void createUserInDatabase(User user)
+        public void createUserInDatabase(final User user)
         {
+            // [START single_value_read]
+            mDatabase.child("users").addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            // Write new post
+                            writeNewPost(user.getUid(), user.getUserName(), user.getRole());
+                        }
 
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                        }
+                    });
+            // [END single_value_read]
         }
+
+        // [START write_fan_out]
+        private void writeNewPost(String userId, String userName, String role) {
+            User user = new User(userId, userName, role);
+            Map<String, Object> postValues = user.toMap();
+            mDatabase.child("users").child(userId).setValue(postValues);
+        }
+        // [END write_fan_out]
     }
 }

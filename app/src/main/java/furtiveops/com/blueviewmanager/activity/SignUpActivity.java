@@ -57,10 +57,12 @@ public class SignUpActivity extends AppCompatActivity {
 
     private boolean validParams = false;
 
-    public static Intent makeInent(final Context context)
+    private User admin;
+
+    public static Intent makeInent(final Context context, final User admin)
     {
         Intent intent = new Intent(context, SignUpActivity.class);
-
+        intent.putExtra(IntentConstants.USER_OBJECT, admin);
         return intent;
     }
 
@@ -71,6 +73,8 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.signup_layout);
 
         ButterKnife.bind(this);
+
+        admin = getIntent().getParcelableExtra(IntentConstants.USER_OBJECT);
 
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
@@ -134,6 +138,9 @@ public class SignUpActivity extends AppCompatActivity {
                             SnackbarManager.show(Snackbar.with(SignUpActivity.this).text(R.string.auth_failed));
                         }
                         else {
+
+                            // For some reason Google decided to make the decision that when you create a user
+                            // with this call, it will log you in with this user.
                             Intent intent = new Intent();
                             intent.putExtra(IntentConstants.USER_ID, task.getResult().getUser().getUid());
                             intent.putExtra(IntentConstants.USER_EMAIL, task.getResult().getUser().getEmail());

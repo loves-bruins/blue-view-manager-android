@@ -7,7 +7,11 @@ package furtiveops.com.blueviewmanager.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @IgnoreExtraProperties
 public class User implements Parcelable{
@@ -57,6 +61,15 @@ public class User implements Parcelable{
         dest.writeString(uid);
         dest.writeString(userName);
         dest.writeString(role);
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("userName", userName);
+        result.put("role", role);
+
+        return result;
     }
 
     public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {

@@ -23,6 +23,15 @@
             android:windowSoftInputMode="adjustPan"/>
 
         <activity android:name=".activity.SignUpActivity"></activity>
+
+        <provider
+            android:name=".contentProviders.SettingsContentProvider"
+            android:authorities="${applicationId}.provider.Settings"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            android:label="SettingsContentProvider"
+            android:readPermission="com.blueviewmanager.provider.Settings.READ"
+            android:writePermission="com.blueviewmanager.provider.Settings.WRITE" />
     </application>
 
 </manifest>
