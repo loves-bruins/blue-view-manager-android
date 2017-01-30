@@ -82,4 +82,5 @@
     <string name="nitrate_level_label">Nitrate Level</string>
     <string name="nitrite_level_label">Nitrite Level</string>
     <string name="notes_label">Notes</string>
+    <string name="cost_label">Cost (USD)</string>
 </resources>

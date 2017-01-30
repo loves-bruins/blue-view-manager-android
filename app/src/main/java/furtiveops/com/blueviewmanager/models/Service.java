@@ -25,4 +25,28 @@ public class Service {
         this.date = date;
         this.notes = notes;
     }
+
+    public String getService_id() {
+        return service_id;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public Long getDate() {
+        return date;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
 }
