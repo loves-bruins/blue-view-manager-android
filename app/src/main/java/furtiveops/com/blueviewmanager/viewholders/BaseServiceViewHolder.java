@@ -7,18 +7,17 @@ import android.widget.TextView;
 
 import org.joda.time.DateTime;
 
-import java.util.Calendar;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import furtiveops.com.blueviewmanager.R;
 import furtiveops.com.blueviewmanager.models.Service;
 
 /**
- * Created by lorenrogers on 1/30/17.
+ * Created by lorenrogers on 1/31/17.
  */
 
-public class WaterChangeServiceHolder  extends RecyclerView.ViewHolder {
+public class  BaseServiceViewHolder extends RecyclerView.ViewHolder {
+
     @BindView(R.id.date_value)
     TextView date;
 
@@ -33,30 +32,36 @@ public class WaterChangeServiceHolder  extends RecyclerView.ViewHolder {
 
     public interface ItemClickListener {
         void onClick(View v);
+        boolean onLongClick(View v);
     }
 
-    private WaterChangeServiceHolder.ItemClickListener listener;
+    private ItemClickListener listener;
 
-    public WaterChangeServiceHolder(View itemView) {
-        super(itemView);
-        ButterKnife.bind(this, itemView);
-    }
-
-    public void bind(Service service, final ItemClickListener listener)
+    public void bind(Service service, final BaseServiceViewHolder.ItemClickListener listener)
     {
         this.listener = listener;
         DateTime dt = new DateTime(service.getDate());
         date.setText(dt.toLocalDate().toString());
         notes.setText(service.getNotes());
         cost.setText(Double.toString(service.getPrice()));
-        itemLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(null != listener)
-                {
-                    listener.onClick(v);
-                }
+        itemLayout.setOnClickListener(v -> {
+            if(null != listener)
+            {
+                listener.onClick(v);
             }
         });
+
+        itemLayout.setOnLongClickListener(v -> {
+            boolean result = false;
+            if(null != listener) {
+                result = listener.onLongClick(v);
+            }
+            return result;
+        });
+    }
+
+    public BaseServiceViewHolder(View itemView) {
+        super(itemView);
+        ButterKnife.bind(this, itemView);
     }
 }

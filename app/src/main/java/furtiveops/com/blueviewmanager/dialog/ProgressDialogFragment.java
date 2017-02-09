@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,8 @@ public class ProgressDialogFragment extends DialogFragment {
     ProgressBar progressBar;
 
     private Unbinder unbinder;
+
+    private boolean visible = false;
 
     public static ProgressDialogFragment newInstance() {
         ProgressDialogFragment fragment = new ProgressDialogFragment();
@@ -75,5 +78,25 @@ public class ProgressDialogFragment extends DialogFragment {
         }
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void show(FragmentManager manager, String tag) {
+        if(!visible) {
+            visible = true;
+            super.show(manager, tag);
+        }
+    }
+
+    @Override
+    public void dismiss() {
+        if(visible) {
+            visible = false;
+            super.dismiss();
+        }
+    }
+
+    public boolean isDialogVisible() {
+        return visible;
     }
 }

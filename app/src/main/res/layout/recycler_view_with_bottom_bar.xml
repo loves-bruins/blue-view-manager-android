@@ -5,17 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/list"
-        android:layout_width="match_parent"
+    <FrameLayout
+        android:id="@+id/content"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_bar"
-        android:divider="@android:color/transparent"
-        android:scrollbars="vertical"
-        android:scrollbarStyle="outsideOverlay"
-        android:listSelector="@drawable/ripple"
-        android:fadeScrollbars="true" />
+        android:layout_width="match_parent"
+        android:layout_above="@+id/bottom_bar">
+        <include layout="@layout/generic_recycler_view_layout"/>
+    </FrameLayout>
 
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottom_bar"

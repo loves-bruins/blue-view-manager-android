@@ -141,6 +141,11 @@ public class UsersActivity extends AppCompatActivity {
                             ((HomeActivity)getActivity()).navigateToUserHistory(ref.getKey());
                         }
                     });
+                }
+
+                @Override
+                protected void onDataChanged() {
+                    super.onDataChanged();
                     hideProgress();
                 }
             };

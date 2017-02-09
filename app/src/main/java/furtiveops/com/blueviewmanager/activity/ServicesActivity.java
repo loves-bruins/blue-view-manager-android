@@ -3,7 +3,6 @@ package furtiveops.com.blueviewmanager.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -15,20 +14,26 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabSelectListener;
+import com.roughike.bottombar.BottomBarTab;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import furtiveops.com.blueviewmanager.IntentConstants;
 import furtiveops.com.blueviewmanager.R;
+import furtiveops.com.blueviewmanager.dialog.BottomSheetCRUDDialogFragment;
 import furtiveops.com.blueviewmanager.dialog.ProgressDialogFragment;
 import furtiveops.com.blueviewmanager.models.Service;
-import furtiveops.com.blueviewmanager.viewholders.WaterChangeServiceHolder;
+import furtiveops.com.blueviewmanager.viewholders.BaseServiceViewHolder;
 
 /**
  * Created by lorenrogers on 1/25/17.
@@ -61,9 +66,11 @@ public class ServicesActivity extends AppCompatActivity {
         private DatabaseReference mDatabase;
         // [END define_database_reference]
 
-        private FirebaseRecyclerAdapter<Service, WaterChangeServiceHolder> mAdapter;
+        //private FirebaseRecyclerAdapter<Service, WaterChangeServiceHolder> mAdapter;
 
         private LinearLayoutManager mManager;
+
+        private HashMap<Integer, FirebaseRecyclerAdapter<Service, BaseServiceViewHolder>> servicesMap = new HashMap<>();
 
         public static ServicesFragment newInstance(final String userId) {
             ServicesFragment fragment = new ServicesFragment();
@@ -87,22 +94,76 @@ public class ServicesActivity extends AppCompatActivity {
             unbinder = ButterKnife.bind(this, view);
 
             progressFragment = ProgressDialogFragment.newInstance();
-            bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
-                @Override
-                public void onTabSelected(@IdRes int tabId) {
-                    int j;
-                    j = tabId;
-                    Log.i(TAG, "TabId = " + Integer.toString(tabId));
-
-                }
-            }, true);
 
             // [START create_database_reference]
             mDatabase = FirebaseDatabase.getInstance().getReference();
             // [END create_database_reference]
 
-            setupView();
+            for(int i = 0; i < bottomBar.getTabCount(); i++) {
+                BottomBarTab barTab = bottomBar.getTabAtPosition(i);
+                servicesMap.put(barTab.getId(), null);
+            }
+
+            bottomBar.setOnTabSelectListener(tabId -> {
+                Log.i(TAG, "TabId = " + Integer.toString(tabId));
+                switch (tabId) {
+                    case R.id.tab_water_change:
+                        list.setAdapter(null);
+                        setupView(getAdapterForViewId(tabId, "0ef5b8bd-fabd-4d02-8f4c-b7362c2a6810"));
+                        break;
+                    case R.id.tab_algae_scrape:
+                        list.setAdapter(null);
+                        setupView(getAdapterForViewId(tabId, "619d6018-7ff1-427d-9e2c-230512ac4760"));
+                        break;
+                    case R.id.tab_general_cleaning:
+                        list.setAdapter(null);
+                        setupView(getAdapterForViewId(tabId, "dcd0e180-13a1-4b01-ba56-4e7bbd4a07e5"));
+                        break;
+                    case R.id.tab_sand_siphon:
+                        list.setAdapter(null);
+                        setupView(getAdapterForViewId(tabId, "13604ecc-90e6-49fb-8585-78efd958c49e"));
+                        break;
+                }
+            }, true);
+
             return view;
+        }
+
+        public FirebaseRecyclerAdapter<Service, BaseServiceViewHolder> getAdapterForViewId(int id, final String guid) {
+            FirebaseRecyclerAdapter<Service, BaseServiceViewHolder> adapter = null;
+
+            if(servicesMap.containsKey(id)) {
+                adapter = servicesMap.get(id);
+                if(null == adapter) {
+                    Query usersQuery = mDatabase.child("user_services").child(userId).child(guid).orderByKey();
+                    adapter = new FirebaseRecyclerAdapter<Service, BaseServiceViewHolder>(Service.class, R.layout.service_performed_item, BaseServiceViewHolder.class, usersQuery) {
+                        @Override
+                        protected void populateViewHolder(BaseServiceViewHolder viewHolder, Service model, final int position) {
+                            viewHolder.bind(model, new BaseServiceViewHolder.ItemClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                }
+
+                                @Override
+                                public boolean onLongClick(View v) {
+                                    BottomSheetCRUDDialogFragment bottomSheetMenu = new BottomSheetCRUDDialogFragment();
+                                    bottomSheetMenu.show(getFragmentManager(), bottomSheetMenu.getTag());
+                                    return true;
+                                }
+                            });
+                        }
+
+                        @Override
+                        protected void onDataChanged() {
+                            super.onDataChanged();
+                            hideProgress();
+                        }
+                    };
+                    servicesMap.put(id, adapter);
+                }
+            }
+            return adapter;
         }
 
         @Override
@@ -111,45 +172,24 @@ public class ServicesActivity extends AppCompatActivity {
             unbinder.unbind();
         }
 
-        private void setupView()
+        private void setupView(FirebaseRecyclerAdapter<Service, BaseServiceViewHolder> adapter)
         {
             mManager = new LinearLayoutManager(getActivity());
             mManager.setOrientation(LinearLayoutManager.VERTICAL);
             list.setLayoutManager(mManager);
 
             showProgress();
-            Query usersQuery = mDatabase.child("user_services").child(userId).child("0ef5b8bd-fabd-4d02-8f4c-b7362c2a6810").orderByKey();
-
-            mAdapter = new FirebaseRecyclerAdapter<Service, WaterChangeServiceHolder>(Service.class, R.layout.service_performed_item, WaterChangeServiceHolder.class, usersQuery) {
-                @Override
-                protected void populateViewHolder(WaterChangeServiceHolder viewHolder, Service model, final int position) {
-                    final DatabaseReference ref = getRef(position);
-                    viewHolder.bind(model, new WaterChangeServiceHolder.ItemClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Service user = mAdapter.getItem(position);
-                            ((HomeActivity)getActivity()).navigateToUserHistory(user.getUid());
-                        }
-                    });
-                    hideProgress();
-                }
-            };
-
-            list.setAdapter(mAdapter);
+            list.setAdapter(adapter);
         }
 
         private void showProgress() {
 
-            if (!progressFragment.isAdded()) {
-                progressFragment.show(getFragmentManager(), ProgressDialogFragment.TAG);
-            }
+            progressFragment.show(getFragmentManager(), ProgressDialogFragment.TAG);
         }
 
         private void hideProgress() {
 
-            if (progressFragment.isAdded()) {
-                progressFragment.dismiss();
-            }
+            progressFragment.dismiss();
         }
     }
 }

@@ -1,0 +1,58 @@
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipToPadding="true"
+    android:background="@color/color_white"
+    android:scrollbars="vertical"
+    app:layout_behavior="@string/bottom_sheet_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:drawableLeft="@mipmap/ic_table_edit_grey600_24dp"
+            android:drawablePadding="@dimen/activity_horizontal_margin"
+            android:padding="@dimen/activity_vertical_margin"
+            android:text="@string/item_edit"
+            android:textAppearance="@style/TextAppearance.Medium"
+            android:background="@drawable/ripple" />
+
+        <TextView
+            android:id="@+id/item_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:drawableLeft="@mipmap/ic_delete_grey600_24dp"
+            android:drawablePadding="@dimen/activity_horizontal_margin"
+            android:padding="@dimen/activity_vertical_margin"
+            android:text="@string/item_delete"
+            android:textAppearance="@style/TextAppearance.Medium"
+            android:background="@drawable/ripple" />
+
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:drawablePadding="@dimen/activity_horizontal_margin"
+            android:padding="@dimen/activity_vertical_margin"
+            android:text="@string/item_crud_cancel"
+            android:textAppearance="@style/TextAppearance.Medium"
+            android:background="@drawable/ripple" />
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

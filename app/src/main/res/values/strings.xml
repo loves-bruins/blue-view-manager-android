@@ -83,4 +83,9 @@
     <string name="nitrite_level_label">Nitrite Level</string>
     <string name="notes_label">Notes</string>
     <string name="cost_label">Cost (USD)</string>
+
+    <!-- Bottom Sheet CRUD-->
+    <string name="item_edit">Edit</string>
+    <string name="item_delete">Delete</string>
+    <string name="item_crud_cancel">Cancel</string>
 </resources>
