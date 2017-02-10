@@ -10,4 +10,5 @@ public class IntentConstants {
     public static final String CURRENT_FRAGMENT_TAG = "currentFragmentTag";
     public static final String USER_OBJECT = "userObject";
     public static final String PASSWORD = "password";
+    public static final String SERVICE_UUID = "serviceUUID";
 }

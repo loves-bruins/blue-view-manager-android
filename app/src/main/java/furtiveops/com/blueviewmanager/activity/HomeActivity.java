@@ -42,6 +42,9 @@ public class HomeActivity extends AppCompatActivity
 
     static final String TAG = "HomeActivity";
 
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+
     @BindView(R.id.nav_view)
     NavigationView navigationView;
 
@@ -94,11 +97,11 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
+        drawerLayout.openDrawer(GravityCompat.START, true);
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -106,9 +109,11 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onBackStackChanged() {
                 int index = getSupportFragmentManager().getBackStackEntryCount() - 1;
-                FragmentManager.BackStackEntry backEntry = getSupportFragmentManager().getBackStackEntryAt(index);
-                currentFragmentTag = backEntry.getName();
-                updateFAB(currentFragmentTag);
+                if(index >= 0) {
+                    FragmentManager.BackStackEntry backEntry = getSupportFragmentManager().getBackStackEntryAt(index);
+                    currentFragmentTag = backEntry.getName();
+                    updateFAB(currentFragmentTag);
+                }
             }
         });
 
@@ -159,13 +164,9 @@ public class HomeActivity extends AppCompatActivity
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
-                            int j;
-                            j = 10;
                         }
                         else
                         {
-                            int q;
-                            q = 10;
                         }
                     }
                 });
@@ -175,9 +176,8 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -216,7 +216,7 @@ public class HomeActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_service_history)
         {
-
+            navigateToServices(user.getUid());
         }
         else if (id == R.id.nav_schedule_work)
         {
@@ -228,7 +228,7 @@ public class HomeActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_track_tests)
         {
-
+            navigateToCycleTestHistory(user.getUid());
         }
         else if (id == R.id.show_users)
         {
@@ -247,8 +247,7 @@ public class HomeActivity extends AppCompatActivity
             startActivityForResult(intent, RC_LOGGED_IN);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -312,8 +311,6 @@ public class HomeActivity extends AppCompatActivity
             while (c.moveToNext()) {
                 adminUserName = c.getString(1);
                 adminPassword = c.getString(2);
-                int q;
-                q = 10;
             }
         }
         Menu menu = navigationView.getMenu();
@@ -328,41 +325,47 @@ public class HomeActivity extends AppCompatActivity
             menu.findItem(R.id.show_users).setVisible(false);
             menu.findItem(R.id.user_communicate_item).setVisible(true);
         }
+        drawerLayout.openDrawer(GravityCompat.START, true);
     }
 
     private void updateFAB(final String fragmentId) {
-        if(UsersActivity.UsersFragment.TAG.equals(fragmentId))
-        {
-            fab.setVisibility(View.VISIBLE);
-            fab.setImageResource(R.mipmap.ic_account_plus_white_24dp);
-
-            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)fab.getLayoutParams();
-            params.setMargins(0, 0, params.rightMargin, 42);
-            fab.setLayoutParams(params);
-            fab.requestLayout();
-        }
-        else if(UserHistoryActivity.UserHistoryFragment.TAG.equals(fragmentId))
-        {
+        if(user.getRole() == "user") {
             fab.setVisibility(View.GONE);
         }
-        else if(CycleTestsActivity.CycleTestsFragment.TAG.equals(fragmentId))
-        {
-            fab.setVisibility(View.VISIBLE);
-            fab.setImageResource(R.mipmap.ic_test_tube_white_24dp);
+        else {
+            if(UsersActivity.UsersFragment.TAG.equals(fragmentId))
+            {
+                fab.setVisibility(View.VISIBLE);
+                fab.setImageResource(R.mipmap.ic_account_plus_white_24dp);
 
-            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)fab.getLayoutParams();
-            params.setMargins(0, 0, params.rightMargin, 42);
-            fab.setLayoutParams(params);
-            fab.requestLayout();
-        }
-        else if(ServicesActivity.ServicesFragment.TAG.equals(fragmentId))
-        {
-            fab.setVisibility(View.VISIBLE);
-            fab.setImageResource(R.mipmap.ic_screwdriver_white_24dp);
-            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)fab.getLayoutParams();
-            params.setMargins(0, 0, params.rightMargin, 110);
-            fab.setLayoutParams(params);
-            fab.requestLayout();
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)fab.getLayoutParams();
+                params.setMargins(0, 0, params.rightMargin, 42);
+                fab.setLayoutParams(params);
+                fab.requestLayout();
+            }
+            else if(UserHistoryActivity.UserHistoryFragment.TAG.equals(fragmentId))
+            {
+                fab.setVisibility(View.GONE);
+            }
+            else if(CycleTestsActivity.CycleTestsFragment.TAG.equals(fragmentId))
+            {
+                fab.setVisibility(View.VISIBLE);
+                fab.setImageResource(R.mipmap.ic_test_tube_white_24dp);
+
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)fab.getLayoutParams();
+                params.setMargins(0, 0, params.rightMargin, 42);
+                fab.setLayoutParams(params);
+                fab.requestLayout();
+            }
+            else if(ServicesActivity.ServicesFragment.TAG.equals(fragmentId))
+            {
+                fab.setVisibility(View.VISIBLE);
+                fab.setImageResource(R.mipmap.ic_screwdriver_white_24dp);
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)fab.getLayoutParams();
+                params.setMargins(0, 0, params.rightMargin, 110);
+                fab.setLayoutParams(params);
+                fab.requestLayout();
+            }
         }
     }
 
@@ -377,6 +380,8 @@ public class HomeActivity extends AppCompatActivity
         }
         else if(CycleTestsActivity.CycleTestsFragment.TAG.equals(fragmentId))
         {
+            Intent intent = AddCycleTestActivity.makeIntent(this, user.getUid());
+            startActivity(intent);
         }
         else if(ServicesActivity.ServicesFragment.TAG.equals(fragmentId))
         {

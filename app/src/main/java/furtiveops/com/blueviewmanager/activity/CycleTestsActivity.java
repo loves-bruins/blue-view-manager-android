@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import furtiveops.com.blueviewmanager.IntentConstants;
 import furtiveops.com.blueviewmanager.R;
+import furtiveops.com.blueviewmanager.dialog.BottomSheetCRUDDialogFragment;
 import furtiveops.com.blueviewmanager.dialog.ProgressDialogFragment;
 import furtiveops.com.blueviewmanager.models.CycleTest;
 import furtiveops.com.blueviewmanager.viewholders.CycleTestViewHolder;
@@ -133,8 +134,13 @@ public class CycleTestsActivity extends AppCompatActivity {
                     viewHolder.bind(model, new CycleTestViewHolder.ItemClickListener() {
                         @Override
                         public void onClick(View v) {
-                            CycleTest user = mAdapter.getItem(position);
-                            ((HomeActivity)getActivity()).navigateToUserHistory(user.getUid());
+
+                        }
+                        @Override
+                        public boolean onLongClick(View v) {
+                            BottomSheetCRUDDialogFragment bottomSheetMenu = new BottomSheetCRUDDialogFragment();
+                            bottomSheetMenu.show(getFragmentManager(), bottomSheetMenu.getTag());
+                            return true;
                         }
                     });
                     hideProgress();

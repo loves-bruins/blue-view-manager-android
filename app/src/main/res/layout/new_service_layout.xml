@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/date_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:id="@+id/date_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/date_label"
+                android:textAppearance="@style/TextAppearance.Large"/>
+
+            <DatePicker
+                android:id="@+id/date_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:datePickerMode="spinner"
+                android:calendarViewShown="false"
+                android:spinnersShown="true">
+
+            </DatePicker>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cost_card"
+            android:layout_below="@+id/date_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/cost_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/cost_label"
+                    android:textAppearance="@style/TextAppearance.Large"/>
+
+                <EditText
+                    android:id="@+id/cost_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cost_label"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberDecimal"
+                    android:ems="10"
+                    android:padding="8dp"
+                    android:background="@drawable/rounded_border" />
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/notes_card"
+            android:layout_below="@+id/cost_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/notes_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/notes_label"
+                    android:layout_marginBottom="8dp"
+                    android:textAppearance="@style/TextAppearance.Large"/>
+
+                <EditText
+                    android:id="@+id/notes_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/notes_label"
+                    android:imeOptions="actionNext"
+                    android:lines="5"
+                    android:padding="8dp"
+                    android:background="@drawable/rounded_border" />
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <info.hoang8f.widget.FButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/notes_card"
+            android:id="@+id/save"
+            android:textStyle="bold"
+            android:text="@string/item_save"
+            android:layout_margin="16dp"
+            app:shadowEnabled="false"
+            app:cornerRadius="3dp"/>
+
+    </RelativeLayout>
+
+</ScrollView>

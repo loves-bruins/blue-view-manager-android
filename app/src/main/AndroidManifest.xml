@@ -24,6 +24,10 @@
 
         <activity android:name=".activity.SignUpActivity"></activity>
 
+        <activity android:name=".activity.AddCycleTestActivity"></activity>
+
+        <activity android:name=".activity.AddServiceActivity"></activity>
+
         <provider
             android:name=".contentProviders.SettingsContentProvider"
             android:authorities="${applicationId}.provider.Settings"

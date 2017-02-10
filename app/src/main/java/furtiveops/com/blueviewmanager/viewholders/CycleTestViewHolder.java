@@ -37,6 +37,7 @@ public class CycleTestViewHolder extends RecyclerView.ViewHolder {
 
     public interface ItemClickListener {
         void onClick(View v);
+        boolean onLongClick(View v);
     }
 
     private CycleTestViewHolder.ItemClickListener listener;
@@ -63,6 +64,13 @@ public class CycleTestViewHolder extends RecyclerView.ViewHolder {
                     listener.onClick(v);
                 }
             }
+        });
+        itemLayout.setOnLongClickListener(v -> {
+            boolean result = false;
+            if(null != listener) {
+                result = listener.onLongClick(v);
+            }
+            return result;
         });
     }
 }
