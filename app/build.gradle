@@ -1,20 +1,32 @@
 apply plugin: 'com.android.application'
 //apply plugin: 'android-apt'
+def keystorePropertiesFile = rootProject.file("keystore.properties");
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
+    signingConfigs {
+        furtiveOps {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
     defaultConfig {
         applicationId "furtiveops.com.blueviewmanager"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+        versionCode 17022815
+        versionName "0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
         jackOptions {
             enabled = true
         }
+        manifestPlaceholders = [HOCKEYAPP_APP_ID: "af13ffeff4514ee09f4aca484b5ecb64"]
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -26,7 +38,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/NOTICE'
@@ -48,7 +59,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:24.2.0'
     compile 'com.android.support:cardview-v7:24.2.0'
     // Google
-
     compile 'com.google.android.gms:play-services-auth:10.0.1'
     compile 'com.google.firebase:firebase-core:10.0.1'
     compile 'com.google.firebase:firebase-database:10.0.1'
@@ -60,45 +70,35 @@ dependencies {
     testCompile 'junit:junit:4.12'
     // Firebase UI
     compile 'com.firebaseui:firebase-ui-database:1.1.1'
-
-
-
-//    // FirebaseUI Database only
-//    compile 'com.firebaseui:firebase-ui-database:1.1.1'
-//
-//    // FirebaseUI Auth only
-//    compile 'com.firebaseui:firebase-ui-auth:1.1.1'
-//
-//    // FirebaseUI Storage only
-//    compile 'com.firebaseui:firebase-ui-storage:1.1.1'
-//
-//    // Single target that includes all FirebaseUI libraries above
-//    compile 'com.firebaseui:firebase-ui:1.1.1'
-
-
-
+    //    // FirebaseUI Database only
+    //    compile 'com.firebaseui:firebase-ui-database:1.1.1'
+    //
+    //    // FirebaseUI Auth only
+    //    compile 'com.firebaseui:firebase-ui-auth:1.1.1'
+    //
+    //    // FirebaseUI Storage only
+    //    compile 'com.firebaseui:firebase-ui-storage:1.1.1'
+    //
+    //    // Single target that includes all FirebaseUI libraries above
+    //    compile 'com.firebaseui:firebase-ui:1.1.1'
     // For Emulator and google play services
     compile 'com.google.android.gms:play-services:10.0.1'
-
     // Material FlatButton (fbutton)
     compile 'info.hoang8f:fbutton:1.0.5'
-
     // Butterknife support
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.jakewharton:butterknife:8.4.0'
-
     /* Snackbar wasn't avaialable until at least Marshmallow. This app supports v16, so we need this */
     compile 'com.nispok:snackbar:2.11.+'
-
     // Material Dialogs
     compile 'com.afollestad.material-dialogs:core:0.8.5.9'
-
     // Floating Action Button
     compile 'com.github.clans:fab:1.6.4'
-
     // For bottom bar navigation
     compile 'com.roughike:bottom-bar:2.1.1'
     compile 'joda-time:joda-time:2.9.7'
+
+    compile 'net.hockeyapp.android:HockeySDK:4.1.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
