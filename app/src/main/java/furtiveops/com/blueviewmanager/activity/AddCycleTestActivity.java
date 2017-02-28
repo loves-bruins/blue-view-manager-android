@@ -100,7 +100,6 @@ public class AddCycleTestActivity extends AppCompatActivity {
             // [START create_database_reference]
             database = FirebaseDatabase.getInstance().getReference();
             // [END create_database_reference]
-
         }
 
         @Nullable

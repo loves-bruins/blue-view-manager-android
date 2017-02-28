@@ -66,11 +66,11 @@ public class ServicesActivity extends AppCompatActivity {
         private DatabaseReference mDatabase;
         // [END define_database_reference]
 
-        //private FirebaseRecyclerAdapter<Service, WaterChangeServiceHolder> mAdapter;
-
         private LinearLayoutManager mManager;
 
         private HashMap<Integer, FirebaseRecyclerAdapter<Service, BaseServiceViewHolder>> servicesMap = new HashMap<>();
+
+        private String selectedUUID;
 
         public static ServicesFragment newInstance(final String userId) {
             ServicesFragment fragment = new ServicesFragment();
@@ -134,6 +134,7 @@ public class ServicesActivity extends AppCompatActivity {
 
             if(servicesMap.containsKey(id)) {
                 adapter = servicesMap.get(id);
+                selectedUUID = guid;
                 if(null == adapter) {
                     Query usersQuery = mDatabase.child("user_services").child(userId).child(guid).orderByKey();
                     adapter = new FirebaseRecyclerAdapter<Service, BaseServiceViewHolder>(Service.class, R.layout.service_performed_item, BaseServiceViewHolder.class, usersQuery) {
@@ -190,6 +191,10 @@ public class ServicesActivity extends AppCompatActivity {
         private void hideProgress() {
 
             progressFragment.dismiss();
+        }
+
+        public String getSelectedUUID() {
+            return selectedUUID;
         }
     }
 }

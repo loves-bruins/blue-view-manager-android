@@ -143,6 +143,10 @@ public class CycleTestsActivity extends AppCompatActivity {
                             return true;
                         }
                     });
+                }
+                @Override
+                protected void onDataChanged() {
+                    super.onDataChanged();
                     hideProgress();
                 }
             };

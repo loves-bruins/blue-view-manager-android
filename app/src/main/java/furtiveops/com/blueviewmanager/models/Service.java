@@ -1,26 +1,35 @@
 package furtiveops.com.blueviewmanager.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by lorenrogers on 1/5/17.
  */
 
-public class Service {
+public class Service implements Parcelable {
     String service_id;
-    Double price;
-    String title;
-
     String uid;
     Long date;
+    Double price;
     String notes;
 
     public Service() {
 
     }
 
-    public Service (String service_id, Double price, String title, String uid, Long date, String notes) {
+    public Service (Parcel in) {
+
+    }
+
+    public Service (String service_id, String uid, Long date, Double price, String notes) {
         this.service_id = service_id;
         this.price = price;
-        this.title = title;
         this.uid = uid;
         this.date = date;
         this.notes = notes;
@@ -34,10 +43,6 @@ public class Service {
         return price;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
     public String getUid() {
         return uid;
     }
@@ -49,4 +54,36 @@ public class Service {
     public String getNotes() {
         return notes;
     }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("date", date);
+        result.put("notes", notes);
+        result.put("price", price);
+
+        return result;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+    }
+
+    public static final Parcelable.Creator<Service> CREATOR = new Parcelable.Creator<Service>() {
+        @Override
+        public Service createFromParcel(final Parcel in) {
+            return new Service(in);
+        }
+
+        @Override
+        public Service[] newArray(final int size) {
+            return new Service[size];
+        }
+    };
 }

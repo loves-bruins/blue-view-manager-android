@@ -30,6 +30,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import furtiveops.com.blueviewmanager.IntentConstants;
@@ -38,7 +41,7 @@ import furtiveops.com.blueviewmanager.contentProviders.SettingsContract;
 import furtiveops.com.blueviewmanager.models.User;
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, PropertyChangeListener {
 
     static final String TAG = "HomeActivity";
 
@@ -55,11 +58,12 @@ public class HomeActivity extends AppCompatActivity
     FloatingActionButton fab;
 
     private FirebaseAuth mFirebaseAuth;
-    private DatabaseReference mFirebaseDatabaseReference;
 
-    private User user;
+    private User user;                              // Currently logged in user.
     private String currentFragmentTag;
     private FirebaseUser firebaseUser = null;
+    private String selectedUserId;                  // For admin only.  The selected user from list
+    private String selectedServiceUUID;             // For admin only.  The selected service to add.
 
     public static final int RC_LOGGED_IN = 100;
     public static final int RC_CREATED_USER = 101;
@@ -261,7 +265,7 @@ public class HomeActivity extends AppCompatActivity
 
     public void navigateToUserHistory(final String userId) {
         UserHistoryActivity.UserHistoryFragment fragment = UserHistoryActivity.UserHistoryFragment.newInstance(userId);
-
+        selectedUserId = userId;
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container, fragment, UserHistoryActivity.UserHistoryFragment.TAG)
@@ -272,6 +276,7 @@ public class HomeActivity extends AppCompatActivity
     public void navigateToCycleTestHistory(final String userId) {
 
         CycleTestsActivity.CycleTestsFragment fragment = CycleTestsActivity.CycleTestsFragment.newInstance(userId);
+        selectedUserId = userId;
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -283,6 +288,7 @@ public class HomeActivity extends AppCompatActivity
     public void navigateToServices(final String userId) {
 
         ServicesActivity.ServicesFragment fragment = ServicesActivity.ServicesFragment.newInstance(userId);
+        selectedUserId = userId;
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -380,11 +386,24 @@ public class HomeActivity extends AppCompatActivity
         }
         else if(CycleTestsActivity.CycleTestsFragment.TAG.equals(fragmentId))
         {
-            Intent intent = AddCycleTestActivity.makeIntent(this, user.getUid());
+            Intent intent = AddCycleTestActivity.makeIntent(this, selectedUserId);
             startActivity(intent);
         }
         else if(ServicesActivity.ServicesFragment.TAG.equals(fragmentId))
         {
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(fragmentId);
+            if(null != fragment && fragment instanceof ServicesActivity.ServicesFragment) {
+                Intent intent = AddServiceActivity.makeIntent(this, selectedUserId, ((ServicesActivity.ServicesFragment)fragment).getSelectedUUID());
+                startActivity(intent);
+            }
         }
+    }
+
+    /*
+     * PropertyChangedListener
+     */
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+
     }
 }
