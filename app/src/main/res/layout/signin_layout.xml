@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@color/color_white">
+    android:background="@color/color_white"
+    >
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,25 +19,41 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <EditText
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:id="@+id/username"
-                android:hint="@string/username_hint"
-                android:layout_margin="16dp"
-                android:maxLines="1"
-                android:background="@drawable/rounded_border"/>
+                android:layout_height="wrap_content">
 
-            <EditText
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:id="@+id/username"
+                    android:hint="@string/username_hint"
+                    android:paddingBottom="@dimen/activity_horizontal_margin"
+                    android:maxLines="1"
+                    android:textAppearance="@style/TextAppearance.Large"
+                    android:drawableLeft="@mipmap/ic_person_16dp"
+                    android:drawablePadding="@dimen/activity_horizontal_margin"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:id="@+id/password"
-                android:hint="@string/password_hint"
-                android:layout_margin="16dp"
-                android:maxLines="1"
-                android:background="@drawable/rounded_border"/>
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:id="@+id/password"
+                    android:hint="@string/password_hint"
+                    android:paddingBottom="@dimen/activity_horizontal_margin"
+                    android:maxLines="1"
+                    android:textAppearance="@style/TextAppearance.Large"
+                    android:drawableLeft="@mipmap/ic_lock_16dp"
+                    android:drawablePadding="@dimen/activity_horizontal_margin"/>
+
+            </android.support.design.widget.TextInputLayout>
 
             <info.hoang8f.widget.FButton
                 android:layout_width="match_parent"

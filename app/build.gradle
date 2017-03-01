@@ -19,14 +19,14 @@ android {
         applicationId "furtiveops.com.blueviewmanager"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 17022815
+        versionCode 17022816
         versionName "0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
         jackOptions {
             enabled = true
         }
-        manifestPlaceholders = [HOCKEYAPP_APP_ID: "af13ffeff4514ee09f4aca484b5ecb64"]
+        manifestPlaceholders = [HOCKEYAPP_APP_ID: "fc55639a65e74e04af3e7623a400740e"]
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

@@ -136,7 +136,7 @@ public class SignInActivity extends AppCompatActivity  {
     }
 
     protected void setupView() {
-        userName.setText("blueviewaquatics@gmail.com");
-        password.setText("password");
+//        userName.setText("blueviewaquatics@gmail.com");
+//        password.setText("password");
     }
 }
