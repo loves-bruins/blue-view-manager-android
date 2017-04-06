@@ -63,6 +63,7 @@
                 android:text="@string/sign_in"
                 android:layout_margin="16dp"
                 app:shadowEnabled="false"
+                android:background="@drawable/ripple"
                 app:cornerRadius="3dp"/>
 
         </LinearLayout>

@@ -19,8 +19,8 @@ android {
         applicationId "furtiveops.com.blueviewmanager"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 17022816
-        versionName "0.1"
+        versionCode 17040400
+        versionName "0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
         jackOptions {

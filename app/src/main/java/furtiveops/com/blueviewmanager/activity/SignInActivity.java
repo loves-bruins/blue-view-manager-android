@@ -8,7 +8,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,6 +31,7 @@ import butterknife.OnClick;
 import furtiveops.com.blueviewmanager.IntentConstants;
 import furtiveops.com.blueviewmanager.R;
 import furtiveops.com.blueviewmanager.contentProviders.SettingsContract;
+import info.hoang8f.widget.FButton;
 
 /**
  * Created by lorenrogers on 12/1/16.
@@ -41,6 +46,9 @@ public class SignInActivity extends AppCompatActivity  {
 
     @BindView(R.id.password)
     EditText password;
+
+    @BindView(R.id.login)
+    FButton login;
 
     // [START declare_auth]
     private FirebaseAuth mAuth;
@@ -105,7 +113,11 @@ public class SignInActivity extends AppCompatActivity  {
     // [END on_stop_remove_listener]
     @OnClick (R.id.login)
     public void signIn() {
-
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0/* InputMethodManager.HIDE_IMPLICIT_ONLY*/);
+        }
         mAuth.signInWithEmailAndPassword(userName.getText().toString(), password.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -118,7 +130,6 @@ public class SignInActivity extends AppCompatActivity  {
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
                             SnackbarManager.show(Snackbar.with(SignInActivity.this).text(R.string.auth_failed));
-                            setResult(Activity.RESULT_CANCELED);
                         }
                         else {
                             final AuthResult authResult = task.getResult();
@@ -128,14 +139,60 @@ public class SignInActivity extends AppCompatActivity  {
                             intent.putExtra(IntentConstants.USER_EMAIL, authResult.getUser().getEmail());
                             intent.putExtra(IntentConstants.PASSWORD, password.getText().toString());
                             setResult(Activity.RESULT_OK, intent);
+                            finish();
                         }
-                        finish();
                         //finishActivity(HomeActivity.RC_LOGGED_IN);
                     }
                 });
     }
 
     protected void setupView() {
+        login.setEnabled(false);
+        userName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!userName.getText().toString().isEmpty()
+                        && !password.getText().toString().isEmpty()) {
+                    login.setEnabled(true);
+                }
+                else {
+                    login.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!userName.getText().toString().isEmpty()
+                        && !password.getText().toString().isEmpty()) {
+                    login.setEnabled(true);
+                }
+                else {
+                    login.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 //        userName.setText("blueviewaquatics@gmail.com");
 //        password.setText("password");
     }

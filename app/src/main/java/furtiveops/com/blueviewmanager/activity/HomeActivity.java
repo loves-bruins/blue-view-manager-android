@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -81,15 +82,15 @@ public class HomeActivity extends AppCompatActivity
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
-        if (firebaseUser == null) {
-            // Not signed in, launch the Sign In activity
-            Intent intent = SignInActivity.makeIntent(this);
-            startActivityForResult(intent, RC_LOGGED_IN);
-            return;
-        } else {
-            user = new User(firebaseUser.getUid(), firebaseUser.getEmail(), getRole(firebaseUser.getEmail()));
-            setupHomeMenu();
-        }
+//        if (firebaseUser == null) {
+//            // Not signed in, launch the Sign In activity
+//            Intent intent = SignInActivity.makeIntent(this);
+//            startActivityForResult(intent, RC_LOGGED_IN);
+//            return;
+//        } else {
+//            user = new User(firebaseUser.getUid(), firebaseUser.getEmail(), getRole(firebaseUser.getEmail()));
+//            setupHomeMenu();
+//        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -128,6 +129,19 @@ public class HomeActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        if (firebaseUser == null) {
+            // Not signed in, launch the Sign In activity
+            Intent intent = SignInActivity.makeIntent(this);
+            startActivityForResult(intent, RC_LOGGED_IN);
+        } else {
+            user = new User(firebaseUser.getUid(), firebaseUser.getEmail(), getRole(firebaseUser.getEmail()));
+            setupHomeMenu();
+        }
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(IntentConstants.CURRENT_FRAGMENT_TAG, currentFragmentTag);
@@ -136,18 +150,23 @@ public class HomeActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(RC_LOGGED_IN == requestCode && Activity.RESULT_OK == resultCode) {
-            if(null != data) {
-                final String userId = data.getStringExtra(IntentConstants.USER_ID);
-                final String email = data.getStringExtra(IntentConstants.USER_EMAIL);
-                final String password = data.getStringExtra(IntentConstants.PASSWORD);
+        if(RC_LOGGED_IN == requestCode) {
+            if(Activity.RESULT_OK == resultCode) {
+                if (null != data) {
+                    final String userId = data.getStringExtra(IntentConstants.USER_ID);
+                    final String email = data.getStringExtra(IntentConstants.USER_EMAIL);
+                    final String password = data.getStringExtra(IntentConstants.PASSWORD);
 
-                user = new User(userId, email, getRole(email));
-                if(user.getRole().equals("admin"))
-                    updateSettings(email, password);
+                    user = new User(userId, email, getRole(email));
+                    if (user.getRole().equals("admin"))
+                        updateSettings(email, password);
 
+                }
+                setupHomeMenu();
             }
-            setupHomeMenu();
+            else {
+                finish();
+            }
         }
         else if(RC_CREATED_USER == requestCode && Activity.RESULT_OK == resultCode){
             if(null != data) {
